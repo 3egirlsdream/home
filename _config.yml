@@ -1,10 +1,10 @@
 title: 青年晚报
 subtitle: Youth Evening Post
 description: 一个三十岁人的个人刊物
-baseurl: "/youth-evening-post"
+baseurl: "/home"
 url: "https://3egirlsdream.github.io"
 github:
-  repo: "3egirlsdream/youth-evening-post"
+  repo: "3egirlsdream/home"
   branch: "main"
 
 permalink: /:year/:month/:day/:title/
