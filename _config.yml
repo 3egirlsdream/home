@@ -3,11 +3,8 @@ subtitle: Youth Evening Post
 description: 一个三十岁人的个人刊物
 baseurl: "/home"
 url: "https://3egirlsdream.github.io"
-github:
-  repo: "3egirlsdream/home"
-  branch: "main"
 
-permalink: /:year/:month/:day/:title/
+permalink: /:title.html
 timezone: Asia/Shanghai
 
 markdown: kramdown
@@ -22,4 +19,3 @@ collections:
   posts:
     title: Posts
     output: true
-    permalink: /posts/:slug/

@@ -2,12 +2,136 @@
 layout: default
 ---
 
+<style>
+.post-content {
+  padding: 40px 60px;
+  max-width: 100%;
+}
+
+.post-content h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.post-content .post-meta {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.post-content p {
+  font-size: 14px;
+  line-height: 2;
+  margin-bottom: 18px;
+  text-align: justify;
+}
+
+.post-content h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 30px 0 15px;
+  letter-spacing: 1px;
+}
+
+.post-content h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 25px 0 10px;
+}
+
+.post-content blockquote {
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-left: 3px solid var(--terracotta);
+  background: var(--kraft-light);
+}
+
+.post-content code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  background: var(--kraft-dark);
+  padding: 2px 6px;
+}
+
+.post-content pre {
+  background: var(--kraft-dark);
+  padding: 15px;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.post-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.post-content ul, .post-content ol {
+  margin: 15px 0;
+  padding-left: 25px;
+}
+
+.post-content li {
+  font-size: 14px;
+  line-height: 2;
+}
+
+.post-content a {
+  color: var(--terracotta);
+  text-decoration: underline;
+}
+
+.post-content a:hover { color: var(--ink); }
+
+.back-link {
+  display: inline-block;
+  margin-top: 30px;
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 8px 20px;
+  border: 1px solid var(--ink);
+}
+
+.back-link:hover {
+  background: var(--ink);
+  color: var(--kraft);
+}
+
+@media (max-width: 600px) {
+  .post-content {
+    padding: 25px 20px;
+  }
+  .post-content h1 {
+    font-size: 22px;
+  }
+}
+</style>
+
 <article class="post-content">
   <h1>{{ page.title }}</h1>
   <div class="post-meta">
     {{ page.date | date: "%Y年%m月%d日" }}
     {% if page.category %} · {{ page.category }}{% endif %}
-    {% if page.tags %} · {{ page.tags | join: ", " }}{% endif %}
   </div>
 
   {{ content }}
