@@ -1,0 +1,69 @@
+---
+layout: post
+title: SonarQube Scanner 扫描C#代码
+category: 杂谈;C#
+date: 2021-01-05
+---
+
+## SonarQube Scanner
+
+[★]: sonar服务器已部署
+
+### 下载SonarQube Scanner for MSBuild
+
+- 下载地址：[download](https://github.com/SonarSource-VisualStudio/sonar-scanner-msbuild/releases/download/2.2/sonar-scanner-msbuild-2.2.0.24.zip)
+
+- 将压缩包解压，假设解压到e:/ms文件夹
+
+- 修改SonarQube.Analysis.xml文件
+
+  - ````xml
+    <?xml version="1.0" encoding="utf-8" ?>
+    <!-- Project Version]
+    
+    -->
+    <SonarQubeAnalysisProperties  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+    
+      <Property Name="sonar.host.url">sonarQubeServerURL</Property>
+      
+      <Property Name="sonar.login">admin</Property>
+      <Property Name="sonar.password">password</Property>
+      <!-- Required only for versions of SonarQube prior to 5.2 -->
+      <!--
+      <Property Name="sonar.jdbc.url">jdbc:jtds:sqlserver://mySqlServer/sonar;instance=SQLEXPRESS;SelectMethod=Cursor</Property>
+      <Property Name="sonar.jdbc.username">sonar</Property>
+      <Property Name="sonar.jdbc.password">sonar</Property>
+      -->
+    
+    </SonarQubeAnalysisProperties>
+    ````
+
+  - *sonarQubeServerURL* ：服务器地址
+
+  - *admin*：账号  *password*：密码
+
+### 扫描代码
+
+- 打开cmd，路径切换到代码文件夹
+
+- ````shell
+  e:\ms\SonarScanner.MSBuild.exe begin /k:"imes_schedule" //imes_schedule
+  ````
+
+  > /k : 特征码  /n : 解决方案名称  /v:随意
+
+- ````shell
+  "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
+  ````
+
+  > Rebuild+ 解决方案名称
+
+- ````shell
+  e:\ms\SonarScanner.MSBuild.exe end 
+  ````
+
+  > sonar服务器账号密码，将报告上传服务器<img src="https://tse4-mm.cn.bing.net/th/id/OIP.6pIaNi_hPk7iyApsEPw0nAHaHa?pid=Api&rs=1" width="15" />
+
+[focus]:依次执行
+ 
+

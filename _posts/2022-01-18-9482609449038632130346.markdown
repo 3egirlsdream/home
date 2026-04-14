@@ -1,0 +1,75 @@
+---
+layout: post
+title: Git撤销远程提交
+category: Git
+date: 2022-01-18
+---
+
+![1642490835887.png](http://cdn.thankful.top/1642490835887.png)
+ 
+**撤销远程提交**
+
+要是我们"不小心"把骂老板的话给提交到远程了，马上其他同事都要看到了，要是被发现就全完了,这个时候我们还来得及撤销吗？
+
+**创建一个犯罪现场（手抖提交到了远程仓库）**
+
+我们来看看github上的远程仓库。
+
+![1642490899663.png](http://cdn.thankful.top/1642490899663.png)
+
+完了完了，真的提交了（我刚刚push的）现在的状态是：
+
+![1642490917095.png](http://cdn.thankful.top/1642490917095.png)
+
+提交命令：
+```` git
+git add \-A
+git commit \-m "\[+\]骂了我的老板"
+git push origin master
+````
+好了，犯罪现场创建完成！
+
+**撤销远程提交**
+
+让我们冷静下来，用 **撤消当前commit** 的方法先撤消本地的`commit`,这次我们来试试用`hard`参数来撤消（不确定用hard 还是 soft，可以到上一篇推送中再做确认-> **撤消当前commit的方法** ）
+
+![1642490950255.png](http://cdn.thankful.top/1642490950255.png)
+
+使用`git reset --hard head^`回滚到上一个`commit`
+
+1. 使用`git status`查看现在的工作区情况，提示`Your branch is behind 'origin/master' by 1 commit`,代表成功表了上一次的提示状态
+2. `nothing to commit, working tree clean`代表这次的修改全没了，清理的算是一个彻底。如果还想找回来怎么办，我们还真是有办法让你找回来的，以后的推送救命的后悔药会详细讲述。
+
+这个时候我们的状态是：
+
+![1642491020031.png](http://cdn.thankful.top/1642491020031.png)
+
+这个时候我们再把他强制推送到远程：
+
+![1642491028935.png](http://cdn.thankful.top/1642491028935.png)
+
+
+1. `git push origin master --force` 命令强制提交到远程仓库(注意，如果是在团队合作的情况下，不到迫不得已不要给命令加--force参数)
+2. 让我们看看`github`
+
+![1642491041157.png](http://cdn.thankful.top/1642491041157.png)
+
+
+真的撤消了远程仓库，长舒一口气。
+
+![1642491049332.png](http://cdn.thankful.top/1642491049332.png)
+
+
+就是这么简单！
+
+**小结**
+
+今天的三分钟我们学会了撤回远程的提交，他的步骤是：
+
+1. `git reset --hard head^`回滚到上一个`commit`
+2. `git push origin master --force 命令强制提交到远程仓库`
+
+当然了，我们也可以用 git reset --soft head^回滚到上一个commit的时候，保存本地代码，然后使用git stash命令**把现场代码保存起来**，再强制提交，这样就可以保留修改以备后续使用啦！
+
+
+> [转载自撤销远程提交-每天三分钟玩转Git (6)](https://cloud.tencent.com/developer/article/1553160)

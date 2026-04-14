@@ -1,0 +1,206 @@
+---
+layout: post
+title: 基于.NET Core的优秀开源项目合集
+category: C#;.NetCore
+date: 2021-01-27
+---
+
+## ☆ eShopOnContainers
+
+eShopOnContainers是一个示例参考应用程序，演示了Microsoft的基于容器的微服务的各种体系结构模式。
+
+**分类：** 参考项目
+
+**License：** MIT
+
+**架构：** 基于容器的微服务
+
+**Github：** https://github.com/dotnet-architecture/eShopOnContainers<sup style="box-sizing: border-box; visibility: visible;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[1]</sup>
+
+**Stars：** 16.4k
+
+## ☆ eShopOnWeb
+
+eShopOnWeb是一个示例参考应用程序，演示了Microsoft提供支持的单体架构。
+
+**分类：** 参考项目
+
+**License：** MIT
+
+**架构：** 单体架构
+
+**Github：** https://github.com/dotnet-architecture/eShopOnWeb<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[2]</sup>
+
+**Stars：** 5.5k
+
+## ☆ nopCommerce
+
+nopCommerce是流行的开源电子商务购物车应用程序，它现在很稳定，并且灵活的支持多种自定义设置，来满足不同的需求。
+
+**分类：** 电子商务
+
+**License：** GPLv3
+
+**Github：** https://github.com/nopSolutions/nopCommerce
+
+**Stars：** 5.7k
+
+## ☆ OrchardCore
+
+OrchardCore是支持模块化和多租户的开源内容管理系统（CMS）框架。
+
+**分类：** CMS
+
+**License：** BSD 3-Clause
+
+**Github：** https://github.com/OrchardCMS/OrchardCore
+
+**Stars：** 4.8k
+
+## ☆ SimplCommerce
+
+SimplCommerce是使用ASP.NET Core构建的基于模块化，微服务的电子商务应用程序。
+
+**分类：** 电子商务
+
+**License：** Apache 2.0
+
+**Github：** https://github.com/simplcommerce/SimplCommerce<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[3]</sup>
+
+**Stars：** 3.1k
+
+## ☆ squidex
+
+squidex是无头CMS和内容管理中心，使用具有OData和CQRS模式的ASP.NET Core构建。
+
+**分类：** CMS
+
+**License：** MIT
+
+**Github：** https://github.com/Squidex/squidex<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[4]</sup>
+
+**Stars：** 1.3k
+
+## ☆ Miniblog.Core
+
+Miniblog.Core是基于ASP.NET Core的博客项目。
+
+**分类：** 博客
+
+**License：** Apache 2.0
+
+**Github：** https://github.com/madskristensen/Miniblog.Core<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[5]</sup>
+
+**Stars：** 1.1k
+
+## ☆ piranha.core
+
+Blogifier是一个用ASP.NET Core编写的轻量级博客模板项目。
+
+**分类：** CMS
+
+**License：** MIT
+
+**Github：** https://github.com/piranhacms/piranha.core<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[6]</sup>
+
+**Stars：** 1.2k
+
+## ☆ practical-aspnetcore
+
+Practical-aspnetcore是ASP.NET Core的示例项目， 该项目的目的是使.NET的程序员能够直接从代码中完全学习新的ASP.NET Core的技术栈。
+
+**分类：** 示例
+
+**License：** MIT
+
+**Github：** https://github.com/dodyg/practical-aspnetcore<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[7]</sup>
+
+**Stars：** 5.4k
+
+## ☆ NorthwindTraders
+
+NorthwindTraders是使用 Entity Framework 和CQRS模式的DDD的示例项目。
+
+**架构：** Clean architecture, DDD, CQRS
+
+**分类：** 参考示例项目
+
+**License：** MIT
+
+**Github：** https://github.com/jasontaylordev/NorthwindTraders<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[8]</sup>
+
+**Stars：** 4.2k
+
+## ☆ ReactiveTraderCloud
+
+ReactiveTraderCloud是一个实时交易应用程序，展示了反应式编程原理。
+
+**架构：** 反应式编程
+
+**分类：** 参考项目
+
+**License：** Apache 2.0
+
+**Github：** https://github.com/AdaptiveConsulting/ReactiveTraderCloud<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[9]</sup>
+
+**Stars：** 1.5k
+
+## ☆ coolstore-microservices
+
+coolstore-microservices是一个示例应用程序，演示了如何通过Service Mesh来使用Kubernetes。
+
+**架构：** Service Mesh,Kubernetes
+
+**分类：** 参考项目
+
+**License：** MIT
+
+**Github：** https://github.com/vietnam-devs/coolstore-microservices<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[10]</sup>
+
+**Stars：** 1.6k
+
+## ☆ clean-architecture-manga
+
+clean-architecture-manga是一个整洁架构的参考示例项目。
+
+**架构：** 整洁架构
+
+**分类：** 参考项目
+
+**License：** Apache
+
+**Github：** https://github.com/ivanpaulovich/clean-architecture-manga<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[11]</sup>
+
+**Stars：** 2.5k
+
+## ☆ StarWars
+
+StarWars是一个基于GraphQL的ASP.NET Core Star Wars应用程序。
+
+**架构：** GraphQL
+
+**分类：** 参考项目
+
+**License：** MIT
+
+**Github：** https://github.com/JacekKosciesza/StarWars<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[12]</sup>
+
+**Stars：** 0.5k
+
+## ☆ sample-dotnet-core-cqrs-api
+
+sample-dotnet-core-cqrs-api是一个示例的项目，演示了整洁架构和与CQRS架构一起使用。
+
+**架构：** Clean architecture, DDD, CQRS
+
+**分类：** 参考项目
+
+**License：** 未标明
+
+**Github：** https://github.com/kgrzybek/sample-dotnet-core-cqrs-api<sup style="box-sizing: border-box;" data-darkmode-color-16117271127968="rgb(255, 53, 2)" data-darkmode-original-color-16117271127968="#fff|rgb(63, 63, 63)|rgb(255, 53, 2)">[13]</sup>
+
+**Stars：** 1.1k
+
+
+
+> 转载自公众号 [【全球技术精选】](https://mp.weixin.qq.com/s/n3BjVU9x0nooD7D7N4OQlA)

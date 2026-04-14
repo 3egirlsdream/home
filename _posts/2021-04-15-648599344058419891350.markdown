@@ -1,0 +1,109 @@
+---
+layout: post
+title: 学习笔记-.netcore依赖注入
+category: C#;依赖注入
+date: 2021-04-15
+---
+
+[TOC]
+
+### 注入类型
+
+- 注入一般分为构造函数注入， [FromServices]注入
+
+### 构造函数注入
+
+- 当整个类都需要使用时，选择构造函数注入
+
+  ```` c#
+  private readonly ILogger<WeatherForecastController> _logger;
+  readonly IEnumerable<IMyDependency> dependency;
+  
+  public WeatherForecastController(ILogger<WeatherForecastController> logger, IEnumerable<IMyDependency> _dependency)
+  {
+      _logger = logger;
+      dependency = _dependency;
+  }
+  ````
+
+###  [FromServices]注入
+
+- 当只需要某个方法临时使用
+
+  ````c#
+  [HttpGet]
+  public string Test2([FromServices] ITestGeneric<string> testGeneric)
+  {
+  	return "testGeneric:" + testGeneric.GetHashCode();
+  }
+  ````
+
+### 注入
+
+- 注入的优点：
+
+  - 减少代码耦合，是需要修改接口的实现类
+  - 方便管理类与类之间的依赖
+  - 由容器统一创建和管理对象生命周期
+
+- .NetCore中依赖注入的几种关键类型
+
+  - IServiceCollection：负责存储注入的服务，可以通过它的拓展方法进行服务注册
+  - ServiceDescriptor：服务注册时的信息，如服务类型、实现类型、实例类型、生命周期等
+  - IServiceProvider：常说的容器，是IServiceCollection创建出来的，用来提供实例的
+  - IServiceScope：一个容器的子容器的生命周期
+
+- 生命周期
+
+  - 通过容器创建出来的对象，根据不同的注入方式有几种不通的生命周期
+  - Singleton(单例) ：整个根容器的生命周期内是同一个对象；通过 services.AddSingleton()方法进行注册；
+  - Scoped(作用域) ：在容器或子容器的生命周期内，对象保持一致，如果容器释放掉，那就意味着对象也会释放掉；通过 services.AddScoped()方法进行注册；
+  - Transient(瞬时) ： 每次使用都会创建新的实例；通过 services.AddTransient()方法进行注册；
+    注：services 是 IServiceCollection services ；
+
+- 在startup中注入服务
+
+  - 如果一个接口注册了多个实现，需要使用IEnumerable来接收
+
+    ````c#
+    //startup.cs
+    public void ConfigureServices(IServiceCollection services)
+    {
+    	services.AddSingleton<IMyDependency, MyDependency>();
+    	services.AddSingleton<IMyDependency, DifferentDependency>();
+    }
+    //具体类里
+    readonly IEnumerable<IMyDependency> dependency;
+    public WeatherForecastController(IEnumerable<IMyDependency> _dependency)
+    {
+    	dependency = _dependency;
+    }
+    ````
+
+  - 注入排他
+
+    - 使用 services.TryAddTransient<ITest, Test>()进行注入时，如果ITest已经注入过，后面的其它实现的注入将失效，如果想继续注入需要使用services.TryAddEnumerable<ITest, Test2>()，注意，同一接口的实现必须不通，否则注入失败，也就是排他。
+
+  - 泛型注入
+
+    ````c#
+    public interface ITestGeneric<T>
+    {
+    
+    }
+    
+    public class TestGeneric<T> : ITestGeneric<T>
+    {
+    
+    }
+    ````
+
+    只能通过参数的形式注册
+
+    ````c#
+    services.AddSingleton(typeof(ITestGeneric<>), typeof(TestGeneric<>));
+    ````
+
+- 传统依赖实例化类，再调用依赖的具体方法，这样的缺陷是如果实现有变化，需要修改的地方比较多
+
+

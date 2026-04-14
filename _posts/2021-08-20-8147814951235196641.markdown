@@ -1,0 +1,293 @@
+---
+layout: post
+title: C#下载文件
+category: C#
+date: 2021-08-20
+---
+
+文件下载是一个软件开发中的常见需求。本文从最简单的下载方式开始步步递进，讲述了文件下载过程中的常见问题并给出了解决方案。并展示了如何使用多线程提升 HTTP 的下载速度以及调用 aria2 实现非 HTTP 协议的文件下载。
+
+## 简单下载
+
+在 .NET 程序中下载文件最简单的方式就是使用 WebClient 的 DownloadFile 方法：
+```` c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+using (var web = new WebClient())
+{
+    web.DownloadFile(url,save);
+}
+````
+## 异步下载
+
+该方法也提供异步的实现：
+
+````c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+using (var web = new WebClient())
+{
+    await web.DownloadFileTaskAsync(url, save);
+}
+````
+
+
+
+## 下载文件的同时向服务器发送自定义请求头
+
+如果需要对文件下载请求进行定制，可以使用 HttpClient ：
+
+````c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+var http = new HttpClient();
+var request = new HttpRequestMessage(HttpMethod.Get,url);
+//增加 Auth 请求头
+request.Headers.Add("Auth","123456");
+var response = await http.SendAsync(request);
+response.EnsureSuccessStatusCode();
+using (var fs = File.Open(save, FileMode.Create))
+{
+    using (var ms = response.Content.ReadAsStream())
+    {
+        await ms.CopyToAsync(fs);
+    }
+}
+````
+
+
+
+## 如何解决下载文件不完整的问题
+
+以上所有代码在应对小文件的下载时没有特别大的问题，在网络情况不佳或文件较大时容易引入错误。以下代码在开发中很常见：
+
+````c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+if (!File.Exists(save))
+{
+    Console.WriteLine("文件不存在，开始下载...");
+    using (var web = new WebClient())
+    {
+        await web.DownloadFileTaskAsync(url, save);
+    }
+    Console.WriteLine("文件下载成功");
+}
+Console.WriteLine("开始处理文件");
+//TODO:对文件进行处理
+````
+
+
+
+如果在 DownloadFileTaskAsync 方法中发生了异常（通常是网络中断或网络超时），那么下载不完整的文件将会保留在本地系统中。在该任务重试执行时，因为文件已存在（虽然它不完整）所以会直接进入处理程序，从而引入异常。
+
+一个简单的修复方式是引入异常处理，但这种方式对应用程序意外终止造成的文件不完整无效：
+
+````c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+if (!File.Exists(save))
+{
+    Console.WriteLine("文件不存在，开始下载...");
+    using (var web = new WebClient())
+    {
+        try
+        {
+            await web.DownloadFileTaskAsync(url, save);
+        }
+        catch
+        {
+            if (File.Exists(save))
+            {
+                File.Delete(save);
+            }
+            throw;
+        }
+    }
+    Console.WriteLine("文件下载成功");
+}
+Console.WriteLine("开始处理文件");
+//TODO:对文件进行处理
+````
+
+
+
+笔者更喜欢的方式是引入一个临时文件。下载操作将数据下载到临时文件中，当确定下载操作执行完毕时将临时文件改名：
+
+````c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+if (!File.Exists(save))
+{
+    Console.WriteLine("文件不存在，开始下载...");
+    //先下载到临时文件
+    var tmp = save + ".tmp";
+    using (var web = new WebClient())
+    {
+        await web.DownloadFileTaskAsync(url, tmp);
+    }
+    File.Move(tmp, save, true);
+    Console.WriteLine("文件下载成功");
+}
+Console.WriteLine("开始处理文件");
+//TODO:对文件进行处理
+````
+
+
+
+## 使用 Downloader 进行 HTTP 多线程下载
+
+在网络带宽充足的情况下，单线程下载的效率并不理想。我们需要多线程和断点续传才可以拿到更好的下载速度。
+
+Downloader 是一个现代化的、流畅的、异步的、可测试的和可移植的 .NET 库。这是一个包含异步进度事件的多线程下载程序。Downloader 与 .NET Standard 2.0 及以上版本兼容，可以在 Windows、Linux 和 macOS 上运行。
+
+![](http://cdn.endingisnihility.xyz/5e8ff9bf55ba350.gif)
+
+GitHub 开源地址： [https://github.com/bezzad/Downloader](https://github.com/bezzad/Downloader)
+
+NuGet 地址：[https://www.nuget.org/packages/Downloader](https://www.nuget.org/packages/Downloader)
+
+从 NuGet 安装 Downloader 之后，创建一个下载配置：
+
+````c#
+var downloadOpt = new DownloadConfiguration()
+{
+    BufferBlockSize = 10240, // 通常，主机最大支持8000字节，默认值为8000。
+    ChunkCount = 8, // 要下载的文件分片数量，默认值为1
+    MaximumBytesPerSecond = 1024 * 1024, // 下载速度限制为1MB/s，默认值为零或无限制
+    MaxTryAgainOnFailover = int.MaxValue, // 失败的最大次数
+    OnTheFlyDownload = false, // 是否在内存中进行缓存？ 默认值是true
+    ParallelDownload = true, // 下载文件是否为并行的。默认值为false
+    TempDirectory = "C:\\temp", // 设置用于缓冲大块文件的临时路径，默认路径为Path.GetTempPath()。
+    Timeout = 1000, // 每个 stream reader  的超时（毫秒），默认值是1000
+    RequestConfiguration = // 定制请求头文件
+    {
+        Accept = "*/*",
+        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+        CookieContainer =  new CookieContainer(), // Add your cookies
+        Headers = new WebHeaderCollection(), // Add your custom headers
+        KeepAlive = false,
+        ProtocolVersion = HttpVersion.Version11, // Default value is HTTP 1.1
+        UseDefaultCredentials = false,
+        UserAgent = $"DownloaderSample/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}"
+    }
+};
+````
+
+
+
+创建一个下载服务：
+
+````c#
+var downloader = new DownloadService(downloadOpt);
+````
+
+
+
+配置事件处理器（该步骤可以省略）：
+
+````c#
+// Provide `FileName` and `TotalBytesToReceive` at the start of each downloads
+// 在每次下载开始时提供 "文件名 "和 "要接收的总字节数"。
+downloader.DownloadStarted += OnDownloadStarted;
+// Provide any information about chunker downloads, like progress percentage per chunk, speed, total received bytes and received bytes array to live streaming.
+// 提供有关分块下载的信息，如每个分块的进度百分比、速度、收到的总字节数和收到的字节数组，以实现实时流。
+downloader.ChunkDownloadProgressChanged += OnChunkDownloadProgressChanged;
+// Provide any information about download progress, like progress percentage of sum of chunks, total speed, average speed, total received bytes and received bytes array to live streaming.
+// 提供任何关于下载进度的信息，如进度百分比的块数总和、总速度、平均速度、总接收字节数和接收字节数组的实时流。
+downloader.DownloadProgressChanged += OnDownloadProgressChanged;
+// Download completed event that can include occurred errors or cancelled or download completed successfully.
+// 下载完成的事件，可以包括发生错误或被取消或下载成功。
+downloader.DownloadFileCompleted += OnDownloadFileCompleted;
+````
+
+
+
+接着就可以下载文件了：
+
+````c#
+string file = @"D:\1.html";
+string url = @"https://www.coderbusy.com";
+await downloader.DownloadFileTaskAsync(url, file);
+````
+
+
+
+## 下载非 HTTP 协议的文件
+
+除了 WebClient 可以下载 FTP 协议的文件之外，上文所示的其他方法只能下载 HTTP 协议的文件。
+
+aria2 是一个轻量级的多协议和多源命令行下载工具。它支持 HTTP/HTTPS、FTP、SFTP、BitTorrent 和 Metalink。aria2 可以通过内置的 JSON-RPC 和 XML-RPC 接口进行操作。
+
+我们可以调用 aria2 实现文件下载功能。
+
+GitHub 地址：[https://github.com/aria2/aria2](https://github.com/aria2/aria2)
+
+下载地址：[https://github.com/aria2/aria2/releases](https://github.com/aria2/aria2/releases)
+
+将下载好的 aria2c.exe 复制到应用程序目录，如果是其他系统则可以下载对应的二进制文件。
+
+````c#
+public static async Task Download(string url, string fn)
+{
+    var exe = "aria2c";
+    var dir = Path.GetDirectoryName(fn);
+    var name = Path.GetFileName(fn);
+    void Output(object sender, DataReceivedEventArgs args)
+    {
+        if (string.IsNullOrWhiteSpace(args.Data))
+        {
+            return;
+        }
+        Console.WriteLine("Aria:{0}", args.Data?.Trim());
+    }
+    var args = $"-x 8 -s 8 --dir={dir} --out={name} {url}";
+    var info = new ProcessStartInfo(exe, args)
+    {
+        UseShellExecute = false,
+        CreateNoWindow = true,
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+    };
+    if (File.Exists(fn))
+    {
+        File.Delete(fn);
+    }
+    Console.WriteLine("启动 aria2c： {0}", args);
+    using (var p = new Process { StartInfo = info, EnableRaisingEvents = true })
+    {
+        if (!p.Start())
+        {
+            throw new Exception("aria 启动失败");
+        }
+        p.ErrorDataReceived += Output;
+        p.OutputDataReceived += Output;
+        p.BeginOutputReadLine();
+        p.BeginErrorReadLine();
+        await p.WaitForExitAsync();
+        p.OutputDataReceived -= Output;
+        p.ErrorDataReceived -= Output;
+    }
+    var fi = new FileInfo(fn);
+    if (!fi.Exists || fi.Length == 0)
+    {
+        throw new FileNotFoundException("文件下载失败", fn);
+    }
+}
+````
+
+
+
+以上代码通过命令行参数启动了一个新的 aria2c 下载进程，并对下载进度信息输出在了控制台。调用方式如下：
+
+````c#
+var url = "https://www.coderbusy.com";
+var save = @"D:\1.html";
+await Download(url, save);
+````
+
+
+
+> 转载自[使用 C# 下载文件的十八般武艺-码农很忙 (coderbusy.com)](https://www.coderbusy.com/archives/1773.html)
+
+

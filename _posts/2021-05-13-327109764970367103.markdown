@@ -1,0 +1,349 @@
+---
+layout: post
+title: JQuery封装多选组件
+category: JQuery;JavaScript
+date: 2021-05-13
+---
+
+### 组件功能
+
+- 多选，查询，默认初始化，最大选中数限制
+
+  ````js
+  var ps = {
+      datas:['选项一', '选项二', '选项三', '维护不到位', '12'],//选项
+      disable: 4,//最大限制
+      init:['选项一', '选项二', '选项三', '维护不到位']//初始化选中值
+  }
+  $('#multiselect').multiselect(ps);
+  
+  <span id="multiselect"></span>
+  ````
+
+  
+
+### 样式
+
+![image-20210513175237296](https://gitee.com/eeegirlsdream/picture/raw/master/article/20210513175401.png)
+
+### JS 
+
+````js
+(function ($) {
+    $.fn.multiselect = function (options) {
+        var defaults = {
+            borderCss: "combox_border",
+            inputCss: "combox_input",
+            buttonCss: "combox_button",
+            selectCss: "combox_select",
+            datas: [],
+            labels: [],
+            disable: 3,
+            init: []
+        };
+        var options = $.extend(defaults, options);
+
+        function _initBorder($border) {//初始化外框CSS
+            $border.css({ 'position': 'relative', 'height': '100%' }).addClass(options.borderCss);
+            return $border;
+        }
+
+
+        function _initInput($border) {//初始化输入框
+            let _ = `<div>
+            <div id="labellist" style="float:left;"></div>
+            <div id="plusbtn" style="float:left;margin-top:-5px;">
+                <div class="circle" data-toggle="dropdown">
+                    <div class="glyphicon glyphicon-plus white" style="margin-top:4px;"></div>
+                </div>
+                <div id="drop_p" class="dropdown-menu" data-stopPropagation="true">
+                    <div id="dropdownLabels" style="padding:2px 10px;">
+                    </div>
+                </div>
+            </div>
+            </div>`;
+            $border.append(_);
+            return $border;//IE6需要返回值
+        }
+
+        function _initSelect($border) {//初始化下拉列表
+            let $drop = $border.children("div").children("div").children("div[id='drop_p']").children("div[id='dropdownLabels']");
+            let search = `<li id="search" class="dropdown-item selecta"><input id="searchlabels" type="text" class="form-control" style="float:right;margin-left:0px;" /></li>`;
+            $drop.append(search);
+            var length = options.datas.length;
+            for (let i = 0; i < length; i++) {
+                let lii = ` <li name="cb" id="li_label_${i}" class="dropdown-item selecta" href="#"><span id="span${i}" class="labelstyle label-default white">${options.datas[i]}</span><input id="checkbox${i}" style="float:right; margin-top:10px;margin-left:15px;" type='checkbox'/></li>`;
+                $drop.append(lii);
+                console.log($drop)
+                var $li = $drop.children('li');
+                $li.delegate('input', 'click', function () {
+                    var status = document.getElementById("checkbox" + i).checked;
+                    if (status) {
+                        if (options.labels.indexOf(i) < 0) options.labels.push(i);
+                    }
+                    else {
+                        let after = [];
+                        for (let j = 0; j < options.labels.length; j++) {
+                            if (options.labels[j] != i) after.push(options.labels[j]);
+                        }
+                        options.labels = after;
+                    }
+                    console.log(options.labels)
+                    changeDisabledStatus();
+                })
+            }
+
+            $("#search").on('input', function () {
+                let value = $("#searchlabels").val();
+                var lb_cp = JSON.parse(JSON.stringify(options.datas));
+                for (let i = 0; i < lb_cp.length; i++) {
+                    if (lb_cp[i].indexOf(value) >= 0) {
+                        $("#li_label_" + i).show();
+                    }
+                    else {
+                        $("#li_label_" + i).hide();
+                    }
+                }
+            })
+
+            $drop.delegate('li', 'click', function () {
+                createLabel(options, $border);
+            });
+
+            initLabel(options, $border)
+
+
+            return $border;
+        }
+
+        function createLabel(options, $border) {
+            let html = "";
+            let $div = $border.children('div').children('div[id="labellist"]');
+            $div.empty();
+            for (let i = 0; i < options.labels.length; i++) {
+                let key = options.labels[i];
+                let content = options.datas[key];
+                html = `<div class="parent_label label">
+                    <span class="label label-default labelstyle">${content}</span>
+                    <span id="del_${key}" class="glyphicon glyphicon-minus-sign deleteLabel"></span>
+                </div>`;
+                $div.append(html);
+                $("#del_" + key).click(function (e) {
+                    let after = [];
+                    for (let j = 0; j < options.labels.length; j++) {
+                        if (options.labels[j] != key) after.push(options.labels[j]);
+                        else {
+                            $("input[id=checkbox" + key + "]").each(function () {
+                                $(this).prop("checked", false);
+                            });
+                        }
+                    }
+                    options.labels = after;
+                    createLabel(options, $border);
+                    changeDisabledStatus();
+                })
+            }
+            
+            result = GetSelectValue();
+            $border.data('selected', result);
+            
+        }
+
+        function changeDisabledStatus() {
+            if (options.labels.length >= options.disable) {
+                console.log(options.labels.length)
+                $("#plusbtn").hide();
+                $("input[type=checkbox]").each(function () {
+                    $(this).attr("disabled", true);
+                });
+            }
+            else {
+                $("input[type=checkbox]").each(function () {
+                    $(this).attr("disabled", false);
+                });
+                $("#plusbtn").show();
+            }
+        }
+
+        function GetSelectValue() {
+            var str = [];
+            for (let i = 0; i < options.labels.length; i++) {
+                let key = options.labels[i];
+                let content = options.datas[key];
+                str.push(content);
+            }
+            return str;
+        }
+
+        function initLabel(options, $border) {
+            let dic = new Array();
+            if (options.init.length == 0) return;
+            for (let i = 0; i < options.datas.length; i++) {
+                dic[options.datas[i]] = i;
+            }
+            for (let i = 0; i < options.init.length; i++) {
+                var content = options.init[i];
+                options.labels.push(dic[content]);
+                $("#checkbox" + dic[content]).prop("checked", true);
+            }
+            createLabel(options, $border)
+            changeDisabledStatus()
+        }
+
+        return this.each(function () {
+            var _this = $(this);
+            _this.empty();
+            _this = _initBorder(_this);//初始化外框CSS
+            _this = _initInput(_this);//初始化输入框
+            _initSelect(_this);//初始化下拉列表
+        });
+    };
+})(jQuery);
+````
+
+
+
+
+
+### style
+
+````css
+ul{list-style-type:none;margin:0;padding-left:0;}
+li{margin:0;}
+
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?-fl11l');
+	src:url('fonts/icomoon.eot?#iefix-fl11l') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-fl11l') format('woff'),
+		url('fonts/icomoon.ttf?-fl11l') format('truetype'),
+		url('fonts/icomoon.svg?-fl11l#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+.ficomoon{font-family:'icomoon';}
+.icon-angle-top:before {content: "\f102"}.icon-angle-bottom:before {content: "\f103"}
+/*可根据自己的实际情况做修改*/
+.combox_border{border:1px solid white;height:28px;width:245px; margin-top:10px;}
+.combox_input{border:0;line-height:25px;height:25px;padding-left: 5px;width:85%;vertical-align: middle;}
+.combox_button{width:12%;text-align:center;vertical-align: middle;cursor:pointer;border-left:1px solid #c2c2c2}
+.combox_select{border:1px solid #c2c2c2;border-top:0;width:100%}
+.combox_select li{overflow:hidden;height:30px;line-height:30px;cursor:pointer;}
+.combox_select a {display: block;line-height: 28px;padding: 0 8px;text-decoration: none;color: #666;}
+.combox_select a:hover {text-decoration: none;background:#f5f5f5}
+.selecta {
+	width: 100%;
+	height: 32px;
+	line-height: 32px;
+}
+
+.parent_label {
+	position: relative;
+}
+
+.labelstyle {
+	background: #199ed7;
+	border-radius: 5px;
+	padding: 3px 5px;
+	/*margin: 20px 5px 10px 0px;*/
+	font-size: 14px;
+}
+
+
+
+.deleteLabel:hover {
+	color: red;
+	/*background-color:red;*/
+}
+
+.circlebutton {
+	width: 26px;
+	height: 26px;
+	text-align: center;
+	padding: 4px 0;
+	font-size: 12px;
+	line-height: 1.428571429;
+	border-radius: 15px;
+}
+
+.deleteLabel {
+	color: transparent;
+	width: 10px;
+	height: 10px;
+	border-radius: 60%;
+	position: absolute;
+	top: -7px;
+	right: 8px;
+}
+
+.white {
+	color: #FFF;
+}
+
+.circle {
+	border: 1px solid #199ed7;
+	text-align: center;
+	padding-left: 1px;
+	padding-top: 1px;;
+	width: 26px;
+	height: 26px;
+	font-size: 12px;
+	line-height: 24px;
+	background: #199ed7;
+	border-radius: 15px;
+}
+
+	.circle:hover {
+		background: #3071a9;
+	}
+````
+
+
+
+### html
+
+````html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>可编辑的下拉框</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./jquery.combox.js"></script>
+    <link rel="stylesheet" href="./styles/style.css" type="text/css" />
+    <script type="text/javascript">
+    var selected = [];
+    var multi = null;
+        $(document).ready(function () {
+            multi = $('#multiselect').multiselect({ datas: ['选项一', '选项二', '选项三', '维护不到位', '12'], disable: 4, init:['选项一', '选项二', '选项三', '维护不到位'] });
+        })
+        function showSelected(){
+           console.log(multi.data('selected'));
+        }
+    </script>
+</head>
+<body>
+<div onclick="showSelected()" style="width: 70px;height: 30px;background-color: red;"></div>
+<span id="multiselect"></span>
+</body>
+</html>
+````
+
+
+
+### 获取选中的值
+
+```` js
+var ps = {
+    datas:['选项一', '选项二', '选项三', '维护不到位', '12'],//选项
+    disable: 4,//最大限制
+    init:['选项一', '选项二', '选项三', '维护不到位']//初始化选中值
+}
+var multi = $('#multiselect').multiselect(ps);
+
+let selected = multi.data('selected');//['','','']
+````
+
+

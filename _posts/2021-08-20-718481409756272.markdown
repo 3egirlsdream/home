@@ -1,0 +1,518 @@
+---
+layout: post
+title: .NetCore学习资源汇总
+category: .NetCore
+date: 2021-08-20
+---
+
+.NET Core入门学习资源汇总篇幅比较长，分为七个部分。
+
+- （一）认识.NET Core
+- （二）Vistual Studio安装、调试
+- （三）[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core入门指南与学习路线
+- （四）入门级实战项目手册、官方教程
+- （五）[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core视频学习资源
+- （六）博客教程
+- （七）部署与测试
+- （八）开源项目推荐
+- （九）代码规范
+
+## **（0）推荐：**
+
+给.neter们整理了一份《.NET/C#面试手册》，目前大约4万字左右，初衷也很简单，就是希望在面试的时候能够帮助到大家，减轻大家的负担和节省时间。对于没有跳槽打算的也可以复习一下相关知识点，就当是查缺补漏！
+
+包括\[基础语法\]、\[**面向对象**\]、\[**集合、异常、泛型、LINQ、委托、EF**\]、\[**多线程**\]、\[**[ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET)** **MVC**\]、\[**[ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET)** **Core**\]、\[**[ADO.NET](https://link.zhihu.com/?target=http%3A//ADO.NET)、XML、HTTP、AJAX、WebService**\]、\[**常见的算法**\]、\[**数据库概念知识**\]、\[**数据库SQL查询（附建表语句）**\]
+
+### **（一）认识.NET Core**
+
+从2014年11月.NET Core 项目启动到2016年06月.NET Core 1.0 发布,2020年你真的需要学习.NET Core!
+
+### **1.什么是.NET Core?**
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core是一个由微软创建的，用于构建Web应用程序，API，微服务的Web框架。它使用常见的模式，例如MVC（模型-视图-控制器），依赖注入，和一个由中间件构成它基于Apache 2.0许可开放源码，就是说，源可以自由获取，并且欢迎社区成员以缺陷修复和新功能提交的方式进行贡献。
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core在Microsoft的.NET运行时库上，例如Java的虚拟机（JVM）或Ruby的解释器。有多种语言（C＃，Visual Basic，F＃）可以编写[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core程序。C＃是最常见的选择，我在书中也会采用它。你可以在Windows，Mac和Linux上进行并发运行[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core应用。
+
+### **2 .NET Core的优势有哪些？**
+
+跨平台：可在 Windows、macOS 和 Linux 操作系统上运行。
+
+跨体系结构保持一致：在多个体系结构（包括 x64、x86 和 ARM）上以相同的行为运行代码。
+
+命令行工具：包括可用于本地开发和持续集成方案中的易于使用的命令行工具。
+
+部署灵活：可以包含在应用或已安装的并行（用户或系统范围安装）中。 可搭配Docker 容器使用。
+
+兼容性：.NET Core 通过 .NET Standard 与 .NET Framework、Xamarin 和 Mono 兼容。
+
+开放源代码：.NET Core 平台是开放源代码，使用 MIT 和 Apache 2 许可证。.NET Core 是一个.NET Foundation 项目。
+
+由 Microsoft 支持：.NET Core 由 Microsoft该项目提供支持。
+
+推荐资源：[ASP.NET Core学习项目汇总，入门项目+通用权限管理+超全C#帮助类！！](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIxNjIwNzQ5Mw%3D%3D%26mid%3D502276804%26idx%3D1%26sn%3D7925d916c13a1ba828c09f8356a60c9f%26chksm%3D0f881b2e38ff9238fd352c7fd3ca00edefec73d7d421754ed5895dc69087c621869a2332b9dd%23rd)
+
+### **3\. .NET 发展简介**
+
+![](http://cdn.thankful.top/v2-e5ed42841be25087a88a27ed2960dff7_b.jpg)
+
+![](http://cdn.thankful.top/v2-e5ed42841be25087a88a27ed2960dff7_720w.jpg)
+
+通俗易懂，什么是.NET?什么是.NET Framework？什么是.NET Core? [https://www.cnblogs.com/zhangmumu/p/11747980.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/zhangmumu/p/11747980.html)
+
+C# 语言版本发展史 [https://docs.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-version-history](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-version-history)
+
+.NET Core 1.0 发布了 [https://www.oschina.net/news/74707/dot-net-core-1-0](https://link.zhihu.com/?target=https%3A//www.oschina.net/news/74707/dot-net-core-1-0)
+
+.NET Core 3.0 新特性：支持 Windows 桌面应用（windows only） [https://www.oschina.net/news/95906/dotnet-core-3-new-features](https://link.zhihu.com/?target=https%3A//www.oschina.net/news/95906/dotnet-core-3-new-features)
+
+.NET Core3.1 新特性 [https://blog.csdn.net/qq\_27843785/article/details/103380597](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_27843785/article/details/103380597)
+
+.NET 跨平台 UI 框架 MAUI终于来了 [https://blog.csdn.net/kebi007/article/details/106270430](https://link.zhihu.com/?target=https%3A//blog.csdn.net/kebi007/article/details/106270430)
+
+### **(二)Vistual Studio安装、调试**
+
+VS2019安装教学  
+[https://blog.csdn.net/Wewon\_real/article/details/90543591](https://link.zhihu.com/?target=https%3A//blog.csdn.net/Wewon_real/article/details/90543591)
+
+vs2019企业版密钥  
+[https://www.cnblogs.com/zhangmumu/p/12833961.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/zhangmumu/p/12833961.html)
+
+12款Visual Studio 好用的工具  
+[https://zhuanlan.zhihu.com/p/144911627](https://zhuanlan.zhihu.com/p/144911627)
+
+VS2019自带 反编译 与 Reflector 反编译工具比较  
+[https://www.cnblogs.com/cjm123/p/10908910.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/cjm123/p/10908910.html)
+
+使用dnSpy调试[http://asp.net](https://link.zhihu.com/?target=http%3A//asp.net) core源码  
+[https://mp.weixin.qq.com/s/Rk06TKNKrkNZt0uS57DqIA](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/Rk06TKNKrkNZt0uS57DqIA)
+
+12个Visual Studio调试效率技巧  
+[https://zhuanlan.zhihu.com/p/157625640](https://zhuanlan.zhihu.com/p/157625640)
+
+使用VS Code 开发.NET CORE 程序指南  
+[https://www.cnblogs.com/xboo/p/11431222.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/xboo/p/11431222.html)
+
+完整构建VSCode开发调试环境  
+[https://www.cnblogs.com/tianqing/p/11874558.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/tianqing/p/11874558.html)
+
+如何为.NETCore安装汉化包智能感知  
+[https://www.cnblogs.com/yyfh/p/12073240.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/yyfh/p/12073240.html)
+
+.NET Core 卸载工具 (dotnet-core-uninstall)  
+[https://news.cnblogs.com/n/657435/](https://link.zhihu.com/?target=https%3A//news.cnblogs.com/n/657435/)
+
+【微软官方文档】[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 各个版本新特性  
+[https://docs.microsoft.com/zh-cn/aspnet/core/release-notes/aspnetcore-2.2?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/release-notes/aspnetcore-2.2%3Fview%3Daspnetcore-2.2)
+
+指定要使用的 .NET Core 版本  
+[https://docs.microsoft.com/zh-cn/dotnet/core/versions/selection](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/dotnet/core/versions/selection)
+
+开源的.NET Core工具类库
+
+包含一些常用的操作类，大都是静态类，加密解密，反射操作，硬件信息，字符串扩展方法，日期时间扩展操作，大文件拷贝，图像裁剪，验证码等常用封装。
+
+懒得勤快：Masuit.Tools
+
+[https://github.com/XiLife-OSPC/Masuit.Tools](https://link.zhihu.com/?target=https%3A//github.com/XiLife-OSPC/Masuit.Tools)
+
+### **（三）[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core入门指南与学习路线**
+
+该指南的目的是为了给读者心有个大概的轮廓。
+
+在下面，您可以看到一个图，说明可以采用的路径以及要成为[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core开发人员所想要学习的库。我将此图作为提示，给所有问我“作为[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core开发人员，接下来应该学习什么？”的人。 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core开发者成长路：  
+
+“作为 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 开发者，我接下来应该学习什么？”，下面将介绍需要学习的东西，其中包括：依赖注入、数据库、缓存、日志、模板引擎、实时通信、测试、任务调度、设计模式等。
+
+[https://www.cnblogs.com/enjoy233/p/AspNetCore\_developer\_roadmap.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/enjoy233/p/AspNetCore_developer_roadmap.html)
+
+路线图：
+
+![](http://cdn.thankful.top/v2-191cb195074b47d165eb5f1eb64a2ef6_b.jpg)
+
+![](http://cdn.thankful.top/v2-191cb195074b47d165eb5f1eb64a2ef6_720w.jpg)
+
+开源地址：  
+[https://github.com/MoienTajik/AspNetCore-Developer-Roadmap](https://link.zhihu.com/?target=https%3A//github.com/MoienTajik/AspNetCore-Developer-Roadmap)
+
+### **（四）入门级实战项目手册、官方教程**
+
+### **推荐一个小白入门级的.NET Core开源项目，非常适合新手入门学习.NET Core。**
+
+开源地址  
+[https://github.com/windsting/little-aspnetcore-book](https://link.zhihu.com/?target=https%3A//github.com/windsting/little-aspnetcore-book)
+
+手册下载地址  
+[https://nbarbettini.gitbooks.io/little-asp-net-core-book/content/chapters/mvc-basics/create-view.html](https://link.zhihu.com/?target=https%3A//nbarbettini.gitbooks.io/little-asp-net-core-book/content/chapters/mvc-basics/create-view.html)
+
+![](http://cdn.thankful.top/v2-d277588ec0ec8046b91bb921e7376e46_b.jpg)
+
+![](http://cdn.thankful.top/v2-d277588ec0ec8046b91bb921e7376e46_720w.jpg)
+
+这是一本[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core手册，目的是帮助web编程开发者和爱好者了解[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core，一个使用Web应用和API的框架。
+
+这本手册内容是一个入门的教程。您可以从头开始，完整地构建一个应用程序，同时了解以下内容：
+
+MVC（模型-视图-控制器）模式的基本内容 前端代码（HTML，CSS，JavaScript）如何与代码交互 什么是依赖注入以及它的实用之处 如何进行数据库的读写操作 如何添加登录，注册功能，以及如何提升安全性 如何部署该应用程序到网络上 即使你对上面的知识点一无所知，也可以从这本手册中开始学习！
+
+更多详情链接  
+[https://zhuanlan.zhihu.com/p/164886312](https://zhuanlan.zhihu.com/p/164886312)
+
+### **微软官方的[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core教程**
+
+了解如何使用 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 创建快速、安全、跨平台和基于云的 Web 应用和服务。 浏览教程、示例代码、基础知识、API 参考和更多内容。
+
+[https://docs.microsoft.com/zh-cn/aspnet/core/?view=aspnetcore-3.1](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/%3Fview%3Daspnetcore-3.1)
+
+### **（五）[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core视频学习资源**
+
+### **bilibili：《从零开始学[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core与Entity Framework Core》**  
+
+[https://www.bilibili.com/video/BV1wb411W7aB](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/BV1wb411W7aB)
+
+来自微软MVP，网名：角落的白板报。
+
+整个课程包含[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core的基础、[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core MVC、[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core Razor EntityFramework Core。
+
+### **.Net Core3.1跨平台实战|源码|框架|调优**
+
+[https://ke.qq.com/course/465090?taid=10573320424986818](https://link.zhihu.com/?target=https%3A//ke.qq.com/course/465090%3Ftaid%3D10573320424986818)
+
+### **老张的哲学**
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 学习视频教程（Blog.Core） [https://www.bilibili.com/video/av58096866/?p=3](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/av58096866/%3Fp%3D3)
+
+### **（六）博客教程**
+
+### **基础**
+
+.NET Core 命令行接口 (CLI) 工具  
+[https://docs.microsoft.com/zh-cn/dotnet/core/tools/?tabs=netcore2x](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/dotnet/core/tools/%3Ftabs%3Dnetcore2x)
+
+使用cmd命令行(.NET Core CLI)来启动[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 应用程序的多个实例  
+[https://www.cnblogs.com/xyh9039/p/13155059.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/xyh9039/p/13155059.html)
+
+.NET Core 运行程序注意事项  
+[https://www.cnblogs.com/DHclly/p/9606866.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/DHclly/p/9606866.html)
+
+.NET Core应用的三种部署方式  
+[https://www.cnblogs.com/Cwj-XFH/p/11612821.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/Cwj-XFH/p/11612821.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 项目目录结构介绍  
+[https://baijiahao.baidu.com/s?id=1620334909551970021&wfr=spider&for=pc](https://link.zhihu.com/?target=https%3A//baijiahao.baidu.com/s%3Fid%3D1620334909551970021%26wfr%3Dspider%26for%3Dpc)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core API 一览表  
+[https://docs.microsoft.com/zh-cn/dotnet/api/index?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/dotnet/api/index%3Fview%3Daspnetcore-2.2)
+
+NetCore 启动地址配置详解  
+[https://www.cnblogs.com/cgyqu/p/12169014.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/cgyqu/p/12169014.html)
+
+[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core WebAPI 端口修改（host.json）  
+[https://www.cnblogs.com/cvol/p/10691065.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/cvol/p/10691065.html)
+
+Net Core3.0配置项目端口号  
+[http://www.tnblog.net/aojiancc/article/details/2984](https://link.zhihu.com/?target=http%3A//www.tnblog.net/aojiancc/article/details/2984)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中的Startup类  
+[https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/startup?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/fundamentals/startup%3Fview%3Daspnetcore-2.2)
+
+基于Webhost分析netcore启动原理  
+[https://www.bilibili.com/video/av58096866/?p=3](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/av58096866/%3Fp%3D3)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中使用多个环境（开发、预发布、生产）- 默认为 Production  
+[https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/environments?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/fundamentals/environments%3Fview%3Daspnetcore-2.2)
+
+在[http://Asp.NET](https://link.zhihu.com/?target=http%3A//Asp.NET) Core中如何优雅的管理用户机密数据  
+[https://www.cnblogs.com/xiyuanMore/p/13096437.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/xiyuanMore/p/13096437.html)
+
+### **依赖注入、控制反转**
+
+什么是控制反转，和依赖注入？
+
+依赖倒置原则（Dependence inversion principle，DIP）：软件设计原则，要依赖于抽象，不要依赖具体实现。
+
+控制反转（Inversion of Control，IoC）：IOC是一种实现DIP原则的模式。平常我们需要一个类对象的时候需要new出来，而现在我们把new一个类对象的工作交给了IOC容器，当我们需要一个类对象的时候直接向IOC容器要，就可以了，这个就是控制反转。（控制权交个了IOC容器）
+
+依赖注入（Dependency Injection，DI）：DI是实现IOC的一种方式。当我需要一个类对象，IOC容器给我们这个类对象的过程其实就是依赖注入，依赖注入有构造函数注入和属性注入。 官方：[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 依赖注入  
+[https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/fundamentals/dependency-injection%3Fview%3Daspnetcore-2.2)
+
+全面理解 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 依赖注入  
+[https://www.cnblogs.com/jesse2013/p/di-in-aspnetcore.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/jesse2013/p/di-in-aspnetcore.html)
+
+官方推荐通过构造函数。这也是所谓的显式依赖。[http://Asp.Net](https://link.zhihu.com/?target=http%3A//Asp.Net) Core 的标准依赖注入容器不支持属性注入。（可以使用autofac或者其他来实现属性注入）  
+[https://www.cnblogs.com/jesse2013/p/di-in-aspnetcore.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/jesse2013/p/di-in-aspnetcore.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中依赖注入的N种玩法  
+[https://www.cnblogs.com/artech/p/di\-asp-net-core-pipeline-2.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/artech/p/di-asp-net-core-pipeline-2.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 自定义特性实现属性注入  
+[https://www.cnblogs.com/viter/p/11085318.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/viter/p/11085318.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 原生DI实现批量注册  
+[http://www.cnblogs.com/ShenNan/p/10256562.html](https://link.zhihu.com/?target=http%3A//www.cnblogs.com/ShenNan/p/10256562.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中如何注入同一个接口的多个实现  
+[https://andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/](https://link.zhihu.com/?target=https%3A//andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中多个接口对应同一个实现的正确姿势  
+[https://andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/](https://link.zhihu.com/?target=https%3A//andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 依赖注入扩展库 Scrutor  
+[https://www.cnblogs.com/catcher1994/p/10316928.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/catcher1994/p/10316928.html)
+
+\[OSharp\]使用 IServiceProvider.GetService() 实现按需注入，优化性能.  
+[https://www.cnblogs.com/guomingfeng/p/osharpns-steps-service.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/guomingfeng/p/osharpns-steps-service.html)
+
+在WPF中使用.NET Core 3.0依赖项注入和服务提供程序  
+[https://www.cnblogs.com/muran/p/11759899.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/muran/p/11759899.html)
+
+AutoFac三种注入方式：按类型、按名称、按键  
+[http://www.cnblogs.com/wolegequ/archive/2012/06/03/2532605.html](https://link.zhihu.com/?target=http%3A//www.cnblogs.com/wolegequ/archive/2012/06/03/2532605.html)
+
+AutoFacIOC容器的使用教程（批量注入）  
+[https://blog.csdn.net/huanghuangtongxue/article/details/78914306](https://link.zhihu.com/?target=https%3A//blog.csdn.net/huanghuangtongxue/article/details/78914306)
+
+AutoFac仓储泛型的依赖注入（泛型注入）  
+[https://blog.csdn.net/huanghuangtongxue/article/details/78937494](https://link.zhihu.com/?target=https%3A//blog.csdn.net/huanghuangtongxue/article/details/78937494)
+
+数据访问仓储模式的事务管理（uow+rp）  
+[https://blog.csdn.net/huanghuangtongxue/article/details/79215136](https://link.zhihu.com/?target=https%3A//blog.csdn.net/huanghuangtongxue/article/details/79215136)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 技巧之伪属性注入(属性注入会造成类型的依赖关系隐藏，测试不友好等)  
+[https://www.cnblogs.com/stulzq/p/12610026.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/stulzq/p/12610026.html)
+
+### **[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core MVC\\WebAPI\\HttpClient**
+
+创建[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core Web API （ControllerBase、参数绑定源）  
+[https://docs.microsoft.com/zh-cn/aspnet/core/web-api/?view=aspnetcore-2.1](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/web-api/%3Fview%3Daspnetcore-2.1)
+
+RESTful API版本控制策略  
+[https://www.cnblogs.com/kenshinobiy/p/4462424.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/kenshinobiy/p/4462424.html)
+
+[http://ASP.Net](https://link.zhihu.com/?target=http%3A//ASP.Net) Core WebAPI 几种版本控制对比（nuget：Microsoft.AspNetCore.Mvc.Versioning）  
+[https://www.cnblogs.com/runningsmallguo/p/7484954.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/runningsmallguo/p/7484954.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 构建带有版本控制的 API 接口（结合SwaggerUI）  
+[https://www.cnblogs.com/danvic712/p/10176823.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/danvic712/p/10176823.html)
+
+使用 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core WebAPI 小技巧  
+[https://www.cnblogs.com/danvic712/p/11255423.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/danvic712/p/11255423.html)
+
+使用 Web API 约定  
+[https://docs.microsoft.com/zh-cn/aspnet/core/web-api/advanced/conventions?view=aspnetcore-3.0](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/web-api/advanced/conventions%3Fview%3Daspnetcore-3.0)
+
+使用 Web API 分析器告警缺失的约定  
+[https://docs.microsoft.com/zh-cn/aspnet/core/web-api/advanced/analyzers?view=aspnetcore-3.0&tabs=visual-studio](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/web-api/advanced/analyzers%3Fview%3Daspnetcore-3.0%26tabs%3Dvisual-studio)
+
+WebApi管理和性能测试工具WebApiBenchmarks  
+[https://mp.weixin.qq.com/s/4gGtxlYBPYFfXKTrloUDTA](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4gGtxlYBPYFfXKTrloUDTA)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core AutoWrapper 自定义响应输出  
+[https://www.cnblogs.com/yyfh/p/12602087.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/yyfh/p/12602087.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core MVC 静态文件目录配置与访问授权  
+[https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/static-files?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/fundamentals/static-files%3Fview%3Daspnetcore-2.2)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 十种方式扩展你的 Views  
+[https://www.cnblogs.com/savorboard/p/aspnetcore-views.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/savorboard/p/aspnetcore-views.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中的特殊视图文件（\_Layout.cshtml、\_ViewStart.cshtml、\_ViewImports.cshtml）  
+[https://www.cnblogs.com/jesen1315/p/11041967.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/jesen1315/p/11041967.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core Razor SDK  
+[https://docs.microsoft.com/zh-cn/aspnet/core/razor-pages/sdk?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/razor-pages/sdk%3Fview%3Daspnetcore-2.2)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 的 Razor 语法参考  
+[https://docs.microsoft.com/zh-cn/aspnet/core/mvc/views/razor?view=aspnetcore-3.0](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/mvc/views/razor%3Fview%3Daspnetcore-3.0)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中的 Razor 页面介绍（OnGet、OnPost、单页多Handler方式）  
+[https://docs.microsoft.com/zh-cn/aspnet/core/razor-pages/?tabs=visual-studio&view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/razor-pages/%3Ftabs%3Dvisual-studio%26view%3Daspnetcore-2.2)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中 Razor 页面的IPageFilter  
+[https://docs.microsoft.com/zh-cn/aspnet/core/razor-pages/filter?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/razor-pages/filter%3Fview%3Daspnetcore-2.2)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 中 Razor 页面的路由和应用约定  
+[https://docs.microsoft.com/zh-cn/aspnet/core/razor-pages/razor-pages-conventions?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/razor-pages/razor-pages-conventions%3Fview%3Daspnetcore-2.2)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core Razor 配置：预编译，动态编译，混合编译  
+[http://www.zkea.net/codesnippet/detail/razor-compilation.html](https://link.zhihu.com/?target=http%3A//www.zkea.net/codesnippet/detail/razor-compilation.html)
+
+\[译\][http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET)：WebForms vs MVC  
+[https://www.cnblogs.com/heyuquan/p/webForms-vs-mvc.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/heyuquan/p/webForms-vs-mvc.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core Razor页面 vs MVC  
+[https://www.cnblogs.com/tdfblog/p/asp-net-razor-pages-vs-mvc.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/tdfblog/p/asp-net-razor-pages-vs-mvc.html)
+
+\[译\][http://ASP.Net](https://link.zhihu.com/?target=http%3A//ASP.Net) Core 2.0中的Razor Page不是WebForm  
+[https://www.cnblogs.com/runningsmallguo/articles/7376565.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/runningsmallguo/articles/7376565.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core Razor页面简化了 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) MVC 应用程序  
+[https://msdn.microsoft.com/magazine/mt842512](https://link.zhihu.com/?target=https%3A//msdn.microsoft.com/magazine/mt842512)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 在通用数据保护条例规则下使用 session  
+[https://www.cnblogs.com/lwqlun/p/10526380.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/lwqlun/p/10526380.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 使用Redis存储Session  
+[https://www.cnblogs.com/stulzq/p/7729105.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/stulzq/p/7729105.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core SameSite 设置引起 Cookie 在 QQ 浏览器中不起作用  
+[https://www.cnblogs.com/dudu/p/10959557.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/dudu/p/10959557.html)
+
+\[github\][http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core CookieManager  
+[https://github.com/nemi-chand/CookieManager](https://link.zhihu.com/?target=https%3A//github.com/nemi-chand/CookieManager)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core HttpClient的演进和避坑  
+[https://www.cnblogs.com/viter/p/10086997.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/viter/p/10086997.html)
+
+C#中HttpClient使用注意：静态化、预热和长连接  
+[https://www.cnblogs.com/dudu/p/csharp-httpclient-attention.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/dudu/p/csharp-httpclient-attention.html) [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core HttpClient的各种用法、生命周期管理  
+[https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/http-requests?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/fundamentals/http-requests%3Fview%3Daspnetcore-2.2)
+
+DotNetCore 使用Http请求及基于 Polly 的处理故障  
+[https://www.cnblogs.com/haosit/p/9722213.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/haosit/p/9722213.html)
+
+DotNetCore 中 HttpClientFactory 类源码分析  
+[https://www.cnblogs.com/lizhizhang/p/9502862.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/lizhizhang/p/9502862.html)
+
+### **（七）部署与测试**
+
+nginx 之 https 证书配置  
+[https://www.cnblogs.com/crazymagic/p/11042333.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/crazymagic/p/11042333.html)
+
+[http://asp.net](https://link.zhihu.com/?target=http%3A//asp.net) core 只有发布之后才能在IIS上部署访问（而[http://asp.net](https://link.zhihu.com/?target=http%3A//asp.net) 程序 是可以直接指定到源代码目录访问）  
+[https://q.cnblogs.com/q/116899/](https://link.zhihu.com/?target=https%3A//q.cnblogs.com/q/116899/)
+
+.Net Core 跨平台：一个简单程序的多平台(windows、Linux、osx)发布  
+[https://www.cnblogs.com/sndnnlfhvk/p/11613685.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/sndnnlfhvk/p/11613685.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 使用 IIS 进行托管部署  
+[http://www.cnblogs.com/wangjieguang/p/core-iis.html](https://link.zhihu.com/?target=http%3A//www.cnblogs.com/wangjieguang/p/core-iis.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 部署到 Linux 进行托管  
+[https://www.cnblogs.com/viter/p/10408012.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/viter/p/10408012.html)
+
+在Linux上使用 pm2 守护你的 .NET Core 应用程序--(pm2 github starts 31.1k)  
+[https://www.cnblogs.com/stulzq/p/9775973.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/stulzq/p/9775973.html)
+
+在Linux上使用Nginx + supervisor部署[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core程序--(supervisor github starts 5.8k)  
+[https://www.cnblogs.com/esofar/p/8043792.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/esofar/p/8043792.html)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 使用Docker进行容器化托管  
+[https://www.cnblogs.com/viter/p/10463907.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/viter/p/10463907.html)
+
+配置 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core 以使用代理服务器和负载均衡器  
+[https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/proxy-load-balancer%3Fview%3Daspnetcore-2.2)
+
+使用 Nginx 在 Linux 上托管 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core  
+[https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/linux-nginx%3Fview%3Daspnetcore-2.2)
+
+使用 Apache 在 Linux 上托管 [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core  
+[https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/linux-apache?view=aspnetcore-2.2](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/linux-apache%3Fview%3Daspnetcore-2.2)
+
+[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core nginx反向代理部署  
+
+[https://www.cnblogs.com/sheng-jie/p/Deploy-ASP-NET-CORE-WITH-REVERSE-PROXY.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/sheng-jie/p/Deploy-ASP-NET-CORE-WITH-REVERSE-PROXY.html)
+
+.NET Core 和 .NET Standard 单元测试最佳做法  
+
+[https://docs.microsoft.com/zh-cn/dotnet/core/testing/unit-testing-best-practices](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/dotnet/core/testing/unit-testing-best-practices)
+
+.NET 测试篇之Moq框架简单使用  
+[https://www.cnblogs.com/tylerzhou/p/11410337.html](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/tylerzhou/p/11410337.html)
+
+使用 dotnet test 和 xUnit 在 .NET Core 中进行 C# 单元测试  
+[https://docs.microsoft.com/zh-cn/dotnet/core/testing/unit-testing-with-dotnet-test](https://link.zhihu.com/?target=https%3A//docs.microsoft.com/zh-cn/dotnet/core/testing/unit-testing-with-dotnet-test)
+
+### **（八）[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core开源项目**
+
+### **OrchardCore**
+
+Orchard Core是使用[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core构建的开源模块化，多租户应用程序框架，以及在该应用程序框架之上构建的内容管理系统（CMS）。
+
+[https://github.com/OrchardCMS/OrchardCore](https://link.zhihu.com/?target=https%3A//github.com/OrchardCMS/OrchardCore)  
+
+**ant-design-blazor**
+
+专为Web应用程序设计的企业级UI，与现有的[http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core MVC和Razor Pages项目无缝集成。
+
+[https://github.com/ElderJames/ant-design-blazor](https://link.zhihu.com/?target=https%3A//github.com/ElderJames/ant-design-blazor)  
+文档：[https://ant-design-blazor.gitee.io/zh-CN/](https://link.zhihu.com/?target=https%3A//ant-design-blazor.gitee.io/zh-CN/)
+
+### **awesome-dotnet-core**
+
+优秀的.NET Core开源项目的集合,从入门到进阶！
+
+内容包括：库、工具、框架、模板引擎、身份认证、数据库、ORM框架、图片处理、文本处理、机器学习、日志、代码分析、教程等。
+
+[https://github.com/OrchardCMS/OrchardCoregithub.com/OrchardCMS/OrchardCore](https://link.zhihu.com/?target=https%3A//github.com/OrchardCMS/OrchardCore)
+
+### **Abp.VNext.Hello**
+
+hello，一个经典的abp框架！
+
+abp是一款DDD模式的框架，它具备分层以及模块化的结构，框架本身含有授权，验证，异常处理，日志，本地化，数据库连接管理，设置管理，审计日志等，ABP是一个开源的且文档友好的应用框架，起始的想法是，“开发一款为所有公司和开发者通用的框架！”。它不仅仅是一个框架，更提供了一个基于DDD和最佳实践的健壮的体系模型。
+
+[https://github.com/wjkhappy14/Abp.VNext.Hello](https://link.zhihu.com/?target=https%3A//github.com/wjkhappy14/Abp.VNext.Hello)
+
+### **ZKEACMS**
+
+纸壳CMS（ZKEACMS）是ZKEASOFT自主研发的，开源的免费的建站系统，您可以直接使用它来做为您的企业网站，门户网站或者个人网站，博客，或用它做二次定制开发以满足您特定的需求。
+
+[https://github.com/SeriaWei/ZKEACMS](https://link.zhihu.com/?target=https%3A//github.com/SeriaWei/ZKEACMS)
+
+### **YiShaAdmin**
+
+YiShaAdmin 基于.NET Core Web开发，借鉴了很多开源项目的优点，让你开发Web管理系统和移动端Api更简单，所以我也把她开源了。 她可以用于所有的Web应用程序，例如网站管理后台、CMS、CRM、ERP、OA这类的系统和移动端Api。
+
+采用Bootstrap + [http://ASP.NET](https://link.zhihu.com/?target=http%3A//ASP.NET) Core + Entity Framework Core基础架构。
+
+[https://github.com/liukuo362573/YiShaAdmin](https://link.zhihu.com/?target=https%3A//github.com/liukuo362573/YiShaAdmin)
+
+### **.NET Core源码**
+
+C#开源项目推荐，.NET Core源码必须推荐！
+
+[https://github.com/dotnet/aspnetcore](https://link.zhihu.com/?target=https%3A//github.com/dotnet/aspnetcore)
+
+### **Util应用框架**
+
+Util是一个.net core平台下的应用框架，旨在提升小型团队的开发输出能力，由常用公共操作类(工具类)、分层架构基类、Ui组件，第三方组件封装，第三方业务接口封装，配套代码生成模板，权限等组成。
+
+[https://github.com/dotnetcore/Util](https://link.zhihu.com/?target=https%3A//github.com/dotnetcore/Util)
+
+### **OSharp**
+
+OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandard2.x开发的一个.NetCore快速开发框架。
+
+这个框架使用最新稳定版的.NetCore SDK（当前是.NET Core 3.1），对 AspNetCore 的配置、依赖注入、日志、缓存、实体框架、Mvc(WebApi)、身份认证、权限授权等模块进行更高一级的自动化封装，并规范了一套业务实现的代码结构与操作流程，使 .Net Core 框架更易于应用到实际项目开发中。
+
+[https://github.com/dotnetcore/OSharp](https://link.zhihu.com/?target=https%3A//github.com/dotnetcore/OSharp)
+
+### **个人博客系统**
+
+运行在windows和linux系统上，完全基于BeetleX.FastHttpAp框架开发。
+
+前后端分离，完全脱离后端视图引擎；基于vuejs和webapi模式
+
+[https://github.com/IKende/XBlog](https://link.zhihu.com/?target=https%3A//github.com/IKende/XBlog)
+
+### **FreeSql**
+
+FreeSql 是功能强大的对象关系映射技术(O/RM)，支持 .NETCore 2.1+ 或 .NETFramework 4.0+ 或 Xamarin。
+
+[https://github.com/dotnetcore/FreeSql](https://link.zhihu.com/?target=https%3A//github.com/dotnetcore/FreeSql)
+
+### **Autofac**
+
+经典的的DI框架。
+
+Autofac是Microsoft .NET的IoC容器。它管理类之间的依赖关系，以使应用程序随着大小和复杂性的增长而易于更改。
+
+[https://github.com/autofac/Autofac](https://link.zhihu.com/?target=https%3A//github.com/autofac/Autofac)
+
+持续更新中，如果你有好的文章、教程，只要是.NET Core,都可以收集起来！欢迎评论。
+
+## （九）代码规范
+
+良好的代码规范，能够帮助我们进行更好的团队协作，它能方便代码的交流和维护；不会影响编码的效率，不与大众习惯冲突；使代码更美观、阅读更方便；使代码的逻辑更清晰、更易于理解。
+
+推荐：《C#编码规范》，包括基本代码格式、命名规范、注释规范、枚举、字符串、数组和集合、类和接口、控制语句、DRY、异常处理

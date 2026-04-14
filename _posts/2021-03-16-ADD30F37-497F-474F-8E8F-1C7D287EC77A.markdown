@@ -1,0 +1,90 @@
+---
+layout: post
+title: 解析markdown生成目录
+category: Markdown
+date: 2021-03-16
+---
+
+[TOC]
+
+# 解析markdown自动生成目录
+
+## [TOC]不是会自动生成目录吗？
+
+- marked.js不支持[TOC]语法
+
+## 使用方案
+
+- 先用正则表达式匹配出所有h标签
+- maked()解析后标签的ID即是标签的内容
+- 我们再分析字符串拿到标签ID
+- 根据不同大小标签设置不同缩进
+- 最后使用a标签显示
+
+## 代码实现
+
+### 正则表达式匹配标签
+
+```` javascript
+function(value){
+    let maxs = /<[Hh]([1-6])[^>]*>.*?[^/]+/g;
+    let node = value.match(maxs);
+}
+
+````
+
+### 处理匹配数据
+
+```` javascript
+function(node){
+    let min = 10000;
+    for(let i = 0; i < node.length; i++){
+      let x = node[i];
+      let index = parseInt(x[2]);
+      let idx = x.indexOf('"');
+      x = x.substring(idx + 1, (x.length));
+      idx = x.indexOf('"');
+
+      if(idx > 0){
+        x = x.substring(0, idx);
+      }
+
+      min = Math.min(min, index);
+	  //全局变量
+      this.nodes.push({
+        index:index,
+        id:x
+      });
+    }
+    this.nodes.forEach(c=>{
+      c.index -= min;
+    })
+}
+````
+
+### 使用a标签显示出来
+
+```` html
+<a
+  style="text-decoration: none"
+  :href="'#' + node.id"
+  v-for="node in nodes"
+  :key="node"
+  ><font color="black"
+    ><span style="margin-left: 15px" v-for="j in node.index" :key="j"
+      ></span
+    >-{{ node.id }}<br /></font
+></a>
+<!--注意：因为这里&nbsp;不生效所以使用margin-left来做缩进-->
+
+````
+
+### 最后的效果如右边所示
+
+
+
+## 总结
+
+- 在网上查阅了很多资料，大部分是通过重写marked.js的Renderer()实现的，稍微麻烦一些，这种写法比较简单，如果想前一种，可以自行查阅。
+
+

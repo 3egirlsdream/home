@@ -1,0 +1,366 @@
+---
+layout: post
+title: Jenkins+github自动化部署.Net Core程序到Docker
+category: .NetCore
+date: 2021-08-20
+---
+
+环境 centos7.9，.NET5
+
+
+# 一、Jenkins搭建
+
+**1）下载Jenkins的war包**
+
+在\\home目录建一个jenkins目录放jenkins的包
+
+```` shell
+#进入\\home目录
+cd \\home #创建 jenkins目录
+mkdir jenkins
+````
+
+
+
+在jenkins目录下载war包
+
+````shell
+#进入jenkin目录
+cd \\home\\jenkins #下载jenkins的war包
+wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+````
+
+
+
+
+
+如果包wget命令用不了的话，安装一下
+
+````shell
+#如果wget命令用不了的话,执行以下命令
+yum -y install wget 
+````
+
+
+
+
+
+下载完后jenkins目录下产生一个jenkins.war文件
+
+![](http://cdn.thankful.top/630011-20210817232855677-1749965251.png)
+
+ **2)安装java jdk**
+
+看到war，可以知道jenkins是java写的，所以要安装java，官网上提示安装java1.8或java11，这里安装java1.8
+
+````shell
+#下载java jdk的rpm文件
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+http://download.oracle.com/otn-pub/java/jdk/8u301-b09/d3c52aa6bfa54d3ca74e617f18309292/jdk-8u301-linux-x64.rpm
+#授权限
+chmod +x jdk-8u301-linux-x64.rpm
+#安装
+rpm -ivh jdk-8u301-linux-x64.rpm
+````
+
+
+
+如果报 Unable to establish SSL connection 执行一下下面命令
+
+````shell
+#如果报Unable to establish SSL connection.执行下面命令
+yum install openssl openssl-devel -y
+````
+
+
+
+执行完上面3个命令，看下java版本信息
+
+````shell
+java -version
+````
+
+
+
+
+
+看到已经安装好了
+
+![](http://cdn.thankful.top/630011-20210817233922765-1097326099.png)
+
+ **3)安装Jenkins**
+
+进入到上面的jenkins.war包的目录\\home\\jenkins
+
+````shell
+#启动，调通前用这个，没问题后再用后台启动，关闭窗体就停止，或ctrl+c停止
+#java -jar jenkins.war --httpPort=8081
+#后台运行 --后台启动,窗体关闭了,也在后台启动
+nohup java -jar jenkins.war --httpPort=8081 &
+#输入jps 查看当前jenkins启动的进程号
+#ps ef|grep jenkins 查询当前启动的jenkins的进程号
+#如果要关闭,kill -9 端口号
+````
+
+
+
+执行上面命令中的  nohup java -jar jenkins.war --httpPort=8081 &  后，浏览器打开ip:8081，这里安装过程要小等一会才能打开
+
+![](http://cdn.thankful.top/630011-20210817235356670-124951416.png)
+
+ 然后按提示命令打开 vi /root/.jenkins/secrets/initialAdminPassword 文件把密码复制到输入框上
+
+````shell
+vi /root/.jenkins/secrets/initialAdminPassword
+````
+
+
+
+然后到这个界面，如果不熟悉，就用推荐的。
+
+![](http://cdn.thankful.top/630011-20210817235427657-440201844.png)
+
+一直等待安装完，如果有失败是网络原因，重试就能装上了。
+
+![](http://cdn.thankful.top/630011-20210817235525791-1141069474.png)
+
+装完后跳到这个界面，输入用户名密码，邮件。
+
+![](http://cdn.thankful.top/630011-20210817235542273-10212913.png)
+
+然后到这个界面，直接保存。
+
+![](http://cdn.thankful.top/630011-20210817235614405-252608077.png)
+
+然后开始使用，来到jenkins界面，右上方有个铃，点击升级。
+
+![](http://cdn.thankful.top/630011-20210817235636927-1563786078.png)
+
+ 装完重启
+
+![](http://cdn.thankful.top/630011-20210817235649593-259864449.png)
+
+安装完成。
+
+![](http://cdn.thankful.top/630011-20210817235713800-251274816.png)
+
+**如果遇到升级慢的问题解决**
+
+
+
+1、修改/home/jenkins/hudson.model.UpdateCenter.xml文件
+
+````shell
+vi /home/jenkins/hudson.model.UpdateCenter.xml
+````
+
+
+
+修改为:
+
+```shell
+<sites>
+  <site>
+    <id>default</id>
+<url>http://mirror.xmission.com/jenkins/updates/update-center.json</url>
+  </site>
+</sites>
+```
+
+
+
+2、设置 default.json 权限 安装插件什么的时候,不需要google.com，改成百度
+
+````shell
+ cd /root/.jenkins/updates/
+````
+
+
+
+
+
+然后执行下面的
+
+````shell
+sed -i 's/http:\/\/updates.jenkins�ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu
+.cn\/jenkins/g' default.json && sed -i
+'s/http:\/\/www.google.com/https:\/\/www.baidu.com/g
+' default.json
+````
+
+修改完之后,需要重新启动
+
+
+# 二、github .NetCore项目准备
+
+github创建一个私有仓库
+
+![](http://cdn.thankful.top/630011-20210818000817240-347021578.png)
+
+创建完后进入仓库，把地址复制出来
+
+![](http://cdn.thankful.top/630011-20210818001047666-687882227.png) 
+
+把项目克隆到本地，这里用vs2019的git功能
+
+![](http://cdn.thankful.top/630011-20210818002638692-1631997963.png)
+
+点克隆后会弹出一个github的授权页面授权给vs，然后成功把项目克隆到本地。
+
+![](http://cdn.thankful.top/630011-20210818010038322-1760555877.png)
+
+ 创建一个.NetCore程序，并放到刚才克隆的目录
+
+ ![](http://cdn.thankful.top/630011-20210818010452953-1917466760.png)
+
+ 运行一下查看界面
+
+![](http://cdn.thankful.top/630011-20210818010552139-2002272557.png)
+
+ 因为我们要把.NetCore程序部署到Docker,所以建一个DockerFile文件
+
+![](http://cdn.thankful.top/630011-20210818010948711-1896271150.png)
+
+ 点了后会会产生一个Dockerfile文件，在根目录，需要把它移动到外面，和项目文件夹同级。
+
+![](http://cdn.thankful.top/630011-20210818011259616-1288630791.png)
+
+Dockerfile的内容是vs自动生成的，内容如下，注意一下路径。
+
+![](http://cdn.thankful.top/630011-20210820095454117-748103393.png)
+
+然后提交修改。
+
+![](http://cdn.thankful.top/630011-20210818011455434-1138158498.png)
+
+ 把项目推到github
+
+![](http://cdn.thankful.top/630011-20210818011550079-1208240507.png)
+
+ 打开githug看到项目已经提交成功
+
+![](http://cdn.thankful.top/630011-20210819020835804-723797216.jpg)
+
+
+# 三、服务器git客户端安装
+
+回到服务器，执行安装git客户端命令
+
+#安装git客户端
+
+```` shell 
+yum install -y git
+````
+
+
+
+安装完客户端后，执行命令生成ssh key命令，一直回车确认即可。
+
+````shell
+#生成ssh key
+ssh-keygen -t rsa -C '284743503@qq.com'
+````
+
+
+
+
+
+![](http://cdn.thankful.top/630011-20210819002909747-487999914.jpg)
+
+执行完命令后，可以看到把ssh key生成到了/root/.ssh目录下了，id\_rsa文件为私钥,id\_rsa.pub为公钥。
+
+执行vi /root/.ssh/id\_rsa.pub打开公钥。
+
+![](http://cdn.thankful.top/630011-20210819003518937-786178579.png)
+
+ 把上面的公钥复制到github上的ssh key里。
+
+![](http://cdn.thankful.top/630011-20210819003838483-1355349433.png)
+
+![](http://cdn.thankful.top/630011-20210819003947751-704478740.png)
+
+
+# 四、Jenkins自动化构建任务创建
+
+回到jenkins，新建任务
+
+![](http://cdn.thankful.top/630011-20210818012141806-216514515.png)
+
+输入任务名称，构建自由风格项目
+
+![](http://cdn.thankful.top/630011-20210818012236728-883350936.png)
+
+**进去源码管理，**选择Git，仓库URL填上面克隆github项目的ssh地址，因为项目是私有的，因为是私有的，所以也要把git的私钥凭证加进来。
+
+复制github上的地址
+
+![](http://cdn.thankful.top/630011-20210819004742750-368841371.png)
+
+填到jenkins的git上，把分支改为github的默认main分支，然后添加github凭证。
+
+![](http://cdn.thankful.top/630011-20210819005418873-1911708719.png)
+
+ 凭证填上面的id\_rsa文件里面的私钥，命令 vi /root/.ssh/id\_rsa然后复制里面的私钥填到sshkey凭证里面。
+
+![](http://cdn.thankful.top/630011-20210819005948468-1051884246.png)
+
+ 配置完后外面选刚才的配置。
+
+![](http://cdn.thankful.top/630011-20210819010044655-204749497.png)
+
+**构建环境**，把超时时间设10分钟，因为访问github网络可能会有点慢，项目文件大的时候拉取需要时间。
+
+![](http://cdn.thankful.top/630011-20210819010333034-1709220012.png)
+
+ **构建，**选择执行shell命令，命令如下，生成docker镜像，然后运行容器实例，然后完成。
+
+````shell
+#!/bin/bash
+# 获取短版本号
+GITHASH=`git rev-parse --short HEAD`
+echo ---------------开始编译程序...------------------
+echo ---------------Building Docker Image...--------
+----------
+docker build -t netcore:$GITHASH .
+docker tag netcore:$GITHASH netcore:latest
+echo ---------------Launching Container...----------
+--------
+docker rm -f netcore
+docker run -d -p 4396:80 --name netcore netcore:latest
+````
+
+**![](http://cdn.thankful.top/630011-20210819010544305-1149470378.png)**
+
+ 在这个任务下点击立即构建，就会自动拉取代码，然后执行里面的shell命令发布。
+
+![](http://cdn.thankful.top/630011-20210819011011328-244266210.png)
+
+ 构建成功
+
+![](http://cdn.thankful.top/630011-20210819021124927-256065428.png)
+
+访问部署的.NetCore ，ip:5001，访问成功
+
+![](http://cdn.thankful.top/630011-20210819021232179-408254062.png)
+
+更新站点，提交
+
+![](http://cdn.thankful.top/630011-20210819021355793-1719264730.png)
+
+![](http://cdn.thankful.top/630011-20210819021430843-565932258.png)
+
+ 再点击立即构建，构建成功，点进去还能看到提交的内容
+
+![](http://cdn.thankful.top/630011-20210819021607271-58533895.png)
+
+ ![](http://cdn.thankful.top/630011-20210819021641166-81162460.png)
+
+ 再访问站点，发现更新了。
+
+![](http://cdn.thankful.top/630011-20210819021707977-1377688074.png)
+
+ 后面的修改，提交后，只需要点击构建就可以自动发布啦！公司中一般都是用自己搭的gitlab，只要把github的操作换成gitlab，操作过程也是一样的。
+
+
+
+> 转载自[最详细之教你Jenkins+github自动化部署.Net Core程序到Docker - 包子wxl - 博客园 (cnblogs.com)](https://www.cnblogs.com/wei325/p/15154918.html)

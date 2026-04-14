@@ -1,0 +1,28 @@
+---
+layout: post
+title: Visual Studio 打开快速监视导致卡死
+category: 杂谈
+date: 2021-05-28
+---
+
+### 问题描述
+
+- Debug时点击`快速监视`导致VS无法操作，此时程序并未未响应，`快速监视`窗口并未出现。
+
+### 解决方案
+
+- 最终在[Quick Watch Freezes VS2017 - Visual Studio Feedback](https://developercommunity.visualstudio.com/t/quick-watch-freezes-vs2017/346744)找到解决方案
+
+  >Thank you Emma, you were spot on!
+  >
+  >Even disabling all my monitors and closing all other applications I was still unable to see the Quick Watch Window but I was able to confirm that the window was active and that it was the reason for the VS not being able to respond to UI interactions (using "Alt+F4" just gave the control back focus back to VS).
+  >
+  >Using the Windows + Arrow keys did the trick to bring the Quick Watch to inside the window boundaries.
+
+- 翻译一下就是用Alt+F4可以关掉看不见的快速监视窗口，此时VS可以正常使用，要看见快速窗口，使用`win`+`↑`快捷键
+
+- 最搞笑的是下面官方回复这不是一个bug，明明就是好吗！
+
+  >Thank you for your feedback! We have determined that this issue is not a bug.
+
+

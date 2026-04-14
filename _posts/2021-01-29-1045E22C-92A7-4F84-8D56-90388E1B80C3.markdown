@@ -1,0 +1,36 @@
+---
+layout: post
+title: 博客1.0正式版发布
+category: 杂谈;C#;.NetCore;Vue
+date: 2021-01-29
+---
+
+> 经过无数次修改，1.0正式版终于完成。
+
+### 前端
+- 采用Vue+Vuetify+Marked
+### 主页
+- 显示文章名，时间，部分内容，以及tag标签
+![image-20210129111244587](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129111244587.png)
+
+- 并且支持手机端，手机端采用自适应
+
+  ![image-20210129111456610](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129111456610.png)![image-20210129111518470](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129111518470.png)
+
+### 分类
+- 简略显示文章信息，并且按照文章tag进行分类
+![image-20210129111719142](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129111719142.png)
+
+### 隐藏功能
+- 通过URL进去隐藏页面，可以进行当前所有文章的新增、编辑、修改、删除
+![image-20210129111846867](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129111846867.png)
+
+### 黑暗模式
+- 通过右上角的Dark Mode按钮可以切换模式
+![image-20210129111946911](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129111946911.png)![image-20210129112010926](https://gitee.com/eeegirlsdream/picture/raw/master/article/image-20210129112010926.png)
+
+### 后端
+
+- 使用.NetCore 5，可以方便地部署在Liunx、Windows服务器上。
+
+[Give me a star ★](https://github.com/3egirlsdream/blog)

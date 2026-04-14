@@ -1,0 +1,57 @@
+---
+layout: post
+title: VS Code插件-粘贴上传七牛云
+category: Markdown;VS Code
+date: 2021-12-28
+---
+
+## 插件名称
+- Markdown Image Paste Upload Qiniu  
+
+  ![1640657755971.png](http://cdn.thankful.top/1640657755971.png)
+
+## 插件功能
+- 粘贴（ctrl + v）图片自动上传七牛云，并且插入返回的外链到文本中。
+
+## 插件配置
+```` json
+{
+    // 插件开关，默认打开
+    "qiniu.enable": true,
+
+    // 上传开关。如关闭则会复制图片到本机，位置为本项目中location。点击上传开关按钮会修改本值。
+    "qiniu.uploadEnable": false,
+
+    // 你的七牛AK: AccessKey
+    "qiniu.access_key": "*****************************************",
+
+    // 你的七牛SK: SecretKey
+    "qiniu.secret_key": "*****************************************",
+
+    // 七牛地区机房代码，可选项，默认华北。华东:Zone_z0, 华北:Zone_z1, 华南:Zone_z2, 北美:Zone_na0, 东南亚:Zone_as0
+    "qiniu.zone":  "Zone_z1",
+
+    // 你的七牛存储名称
+    "qiniu.bucket": "i-am-pic",
+
+    // 你的七牛外链地址。注意需要以http://作为开头 /为结尾。
+    "qiniu.domain": "http://xxxxx.xxxx.com/",
+
+    // 远程文件命名方式。参数化命名，暂时支持 ${fileName}、${mdFileName}、${date}、${dateTime}
+    // 示例：
+    //   ${mdFileName}-${dateTime} -> markdownName-20170412222810.jpg
+    "qiniu.remotePath": "${fileName}",
+
+    // 图片本地保存路径（因为七牛的api限制，截图上传是先将黏贴板里的图片存储到本地，然后再根据这个路径上传图片
+    "qiniu.location": "./img"
+}
+````
+
+## 插件原理
+- 先保存图片到本地，再上传文件，上传成功后删除掉本地文件。
+
+## 可能出现的问题
+- Linux、Mac可能出现问题（没有测试
+
+
+

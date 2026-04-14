@@ -1,0 +1,90 @@
+---
+layout: post
+title: windows搭建nextcloud私有云盘
+category: 云盘;NextCloud;Docker
+date: 2021-10-04
+---
+
+## 方案推荐
+- 使用普通电脑作为服务器，我这里使用的是nuc11，只做nas的话可以用性能弱一点的nuc也可以，自己加上内存和固态配下来大概几百块钱。选用nuc的原因是nuc体积比较小，硬盘这里推荐购买一个磁盘阵列，我购买的是铁威马的双盘位的阵列，组的raid1，硬件的话就是这些，还是很便宜的，除去硬盘大概1k出头。相比市面上的成品性能是要强不少的，一般市面上大内存的产品都很贵，而这个方案内存拓展就很便宜了，软件部分我们主要基于docker来构建，系统的话可以安装Linux，Windows，我这里安装的是Windows，再安装docker desktop，私有云我们选用nextcloud，市面上私有云方案很多，不过nextcloud跨系统客户端做的非常好，而且免费。利用docker我们可以在系统上安装各种服务，比如emby搭建影音服务器，aria2搭建下载服务等等。数据我们全部通过挂载的方式挂载到磁盘阵列。
+
+## 安装nextcloud
+### 安装docker
+- 安装docker for windows [下载地址](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=header)
+- 打开Windows Linux子系统
+  
+  ![image-20211004213543553](http://cdn.thankful.top/image-20211004213543553.png)
+
+- 打开HyperV虚拟机
+
+- 安装后如果遇到报错安装[https://czf-net.xyz/res/](https://czf-net.xyz/res/)里的wsl.msi 。
+
+- 应用商店安装Linux子系统，这里我安装的是Debian（后面换成了Ubuntu - -）。
+
+  ![Microsoft Store 中的 Linux 分发版的视图](http://cdn.thankful.top/store.png)
+
+- 使用powershell设置默认wsl为wsl2
+
+  ````shell
+  wsl --set-default-version 2
+  ````
+
+### 部署nextcloud
+
+- 拉取镜像
+
+  ````shell
+  docker pull nextcloud
+  ````
+
+- 运行，这里可以通过命令，也可以通过客户端
+
+  ![image-20211004214219922](http://cdn.thankful.top/image-20211004214219922.png)
+
+  ![image-20211004214309925](http://cdn.thankful.top/image-20211004214309925.png)
+
+- ports为映射到本机的端口，需要挂载2个目录到宿主机，第一个是网盘文件存放的位置，第二个为nextcloud配置文件路径，后面会用到。
+
+- 运行完成后浏览器输入本机IP:端口，直接安装，安装完成如果有下面的报错，打开我们映射的配置文件config.php
+
+  ````shell
+  nextcloud 您的数据目录可被其他用户读取 请更改权限为 0770 以避免其他用户查看目录.
+  增加一行：'check_data_directory_permissions' => false
+  ````
+
+- 就可以愉快地使用了。
+
+  ![image-20211004214831712](http://cdn.thankful.top/image-20211004214831712.png)
+
+### 其他功能
+- 支持全平台的客户端
+- raw文件支持，实测支持sony raw，需要在应用里下载插件。
+- 支持安卓app。
+
+### 挂载到USB磁盘阵列
+
+- 因为磁盘阵列一般是通过USB连接到电脑，linux对USB存储的读写权限可能不够，可能会导致挂载失败，进入Linux设置
+
+  ````shell
+  setenforce 0
+  ````
+
+## 安装emby
+- 安装emby搭建影音服务器
+  ```` shell
+  docker pull emby
+  docker run -it 81:8096 --name emby -v /d/aria2/downloads:/EMBY emby
+  ````
+
+### 使用第三方插件搜索字幕
+- 选择Windows 版本的下载[下载地址](https://github.com/MediaBrowser/Emby.Releases/releases)
+- 使用命令拷贝进docker容器
+  ```` shell
+  docker ps #查看emby容器ID
+  docker cp D:\\Emby.MeiamSub.Thunder.dll 容器ID:./system/plugins/
+  docker cp D:\\Emby.MeiamSub.Shooter.dll  容器ID:./system/plugins/
+  docker restart 容器ID #重启服务
+  ````
+
+
+

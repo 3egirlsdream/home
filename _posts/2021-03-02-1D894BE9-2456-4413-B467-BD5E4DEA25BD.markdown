@@ -1,0 +1,144 @@
+---
+layout: post
+title: LeetCode-239
+category: 双向队列;LeetCode
+date: 2021-03-02
+---
+
+## 题目
+   - You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.
+
+
+
+### 说一下原来的思路
+  - 用一个双向队列 **ts** 来存储当前窗口覆盖的节点，key为数值，value为原索引位置，队头 **First** 为小值，队尾 **Last** 为大值，每次右移首先判断是否比新值是否比 **Last** 大，大则入队尾，并且查找将索引最小的节点移除，如果新值比 **Last** 小，查找到对应中间位置入队，同样删除索引最小节点
+  - 关于入队，新建一个Stack，用来存储 **ts** 抛出的值，如果找到最小索引节点便直接抛出，不入栈，最后再将栈的数据入队列
+- 问题：入队操作耗时太高，导致整体超时
+
+
+````c#
+/*
+ * @lc app=leetcode id=239 lang=csharp
+ *
+ * [239] Sliding Window Maximum
+ */
+
+public class Solution
+{
+    public int[] MaxSlidingWindow(int[] nums, int k)
+    {
+        //Key为值，Value为索引
+        LinkedList<KeyValuePair<int, int>> ts = new System.Collections.Generic.LinkedList<KeyValuePair<int, int>>();
+        List<KeyValuePair<int, int>> ls = new List<KeyValuePair<int, int>>();
+        for (int i = 0; i < k; i++)
+        {
+            var pair = new KeyValuePair<int, int>(nums[i], i);
+            ls.Add(pair);
+        }
+	    //将数据按从首到为从小到大排序
+        ls.OrderBy(x => x.Key).ToList().ForEach(x => ts.AddLast(x));
+
+        var list = new List<int>();
+        list.Add(ts.Last().Key);
+        for (int i = 1; i <= nums.Count() - k; i++)
+        {
+            int maxn1 = nums[i + k - 1]; // maxn2;
+            if (maxn1 > ts.Last().Key)
+            {
+                list.Add(maxn1);
+                add(ts, new KeyValuePair<int, int>(nums[i + k - 1], i + k - 1), i - 1);
+            }
+            else
+            {
+                add(ts, new KeyValuePair<int, int>(nums[i + k - 1], i + k - 1), i - 1);
+                list.Add(ts.Last().Key);
+            }
+        }
+        return list.ToArray();
+    }
+	
+    //三参数为当前窗口的最小值索引位置
+    private static void add(LinkedList<KeyValuePair<int, int>> ts, KeyValuePair<int, int> pair, int index)
+    {
+        var stack = new Stack<KeyValuePair<int, int>>();
+        //是否移除最小索引标记
+        var flag = false;
+        while (ts.Count > 0 && ts.Last().Key > pair.Key)
+        {
+            var f = ts.Last();
+            if (f.Value == index && !false)
+            {
+                flag = true;
+            }
+            else
+            {
+                stack.Push(ts.Last());
+            }
+
+            ts.RemoveLast();
+        }
+
+        stack.Push(pair);
+        if (!flag)
+        {
+            while (ts.Count > 0)
+            {
+                var f = ts.Last();
+                if (f.Value == index)
+                {
+                    flag = true;
+                    ts.RemoveLast();
+                    break;
+                }
+                else
+                {
+                    stack.Push(f);
+                    ts.RemoveLast();
+                }
+            }
+        }
+
+        while (stack.Count > 0)
+        {
+            ts.AddLast(stack.Peek());
+            stack.Pop();
+        }
+    }
+}
+
+
+
+````
+
+
+
+### 新解法的思路
+  - 也是使用一个双向队列，但是这里队列存的值为节点的索引，队尾为小值，队首为大值，入队时将小于新值的节点全部抛出，始终保持队首为最大值。
+
+```` c#
+public class Solution
+{
+    public int[] MaxSlidingWindow(int[] nums, int k)
+    {
+        LinkedList<int> ts = new System.Collections.Generic.LinkedList<int>();
+
+        var list = new int[nums.Count() -k + 1];
+        for (int i = 0; i < nums.Count(); i++)
+        {
+            int maxn1 = nums[i];
+            if (ts.Count > 0 && ts.First.Value <= i - k) ts.RemoveFirst();
+            while (ts.Count > 0 && nums[ts.Last.Value] <= maxn1)
+            {
+                ts.RemoveLast();
+            }
+
+            ts.AddLast(i);
+            var index = i - k + 1;
+            if (index >= 0)
+                list[index] = nums[ts.First.Value];
+        }
+        return list;
+    }
+}
+````
+

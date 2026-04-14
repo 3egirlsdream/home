@@ -1,0 +1,153 @@
+---
+layout: post
+title: Office插件过度动画解决方案
+category: C#;VSTO
+date: 2022-05-19
+---
+
+# Office VSTO 插件过渡动画解决方案
+
+![](http://cdn.thankful.top/loading.gif)
+
+## 存在的问题
+- 使用WPF自定义动画与Office主题之间存在割裂，即它们作为2个单独的窗体实际操作中会存在一些问题，虽然WPF有Onwer但是Office插件却不是Window类型的，没办法直接使用
+
+## 解决方案
+
+### 解决割裂的问题
+- 通过获取Office插件句柄和借助WindowInterOpHelper互操作类将2者合并为一体
+    ```` c#
+        var loading = new Loading();
+        new WindowInterOpHelper(loading){ Owner = new IntPtr(Globals.ThisAddIn.Application.Hwmd)};
+        loading.ShowDialog();
+    ````
+
+### 实现各种功能
+> Office插件属于单线程套间，因此在加载过度动画窗体时当前线程会阻塞，因此逻辑和动画不能在同一个线程上运行
+
+- 首先实现一个动画
+  ```` C#
+    public Loading(){
+
+    }
+
+    public void SetPercent(int count);
+  ````
+#### 动画在新线程上运行
+ - 因为线程的启动和逻辑的运行不是并行的，所以可能存在窗体还没初始化完成的情况，因此需要设置一个标识opened, 可选继承IDisposable将线程释放，窗体关闭放在里处理。
+ - 这种方式可以实现逻辑顺序编写，对写代码比较友好，不会有繁琐的异步多线程考虑，缺点就是动画与Office独立运行，会有割裂感
+    ```` C#
+        private bool opened = false;
+        private Thread thread;
+        private Loading loading;
+        private bool IsDisposed = false;
+        public LoadingHelper()
+        {
+            thread = new Thread(new ThreadStart(() =>
+            {
+                loading = new Loading();
+                opened = true;
+                loading.ShowDialog();
+            }));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+
+        public void SetPercent(int count)
+        {
+            if(opened)
+            {
+                loading.SetPercent(count);
+            }
+            else
+            {
+                Thread.Sleep(100);
+                SetPercent(count);
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing || IsDisposed)
+            {
+                return;
+            }
+
+            if (!IsOpened)
+            {
+                Thread.Sleep(100);
+                Dispose(true);
+            }
+            else
+            {
+                IsDisposed = true;
+                loading.Close();
+            }
+        }
+
+        ~LoadingHelper()
+        {
+            Dispose(false);
+        }
+
+    ````
+
+#### 逻辑在新线程上运行
+  >逻辑可以在原来主线程上异步运行，也可以打包为委托传入加载动画窗体异步执行，后者可以实现带中断操作效果的关闭
+  >窗体在原线程运行，可以实现动画与Office融合，一体性效果比较好，缺点就是逻辑必须按异步编写，对编写要求更高
+  - 在原线程异步处理，以Show()的方式声明窗体，然后使用Task异步执行逻辑
+    ```` C#
+        var loading = new Loading();
+        loading.Show();
+        await task;
+        loading.Close();
+    ````
+  - 逻辑打包到动画窗体处理，首先要对动画窗体进行一个封装，CancellationTokenSource可以抛出一个异常来中断Task
+    ````C#
+        //逻辑
+        var action = new Action<CancellationToken, Loading>((token, loading)=>{
+            for(;;)
+            {
+                token.ThrowIfCancellationRequested();
+                //逻辑
+            }
+        });
+        //声明
+        var loading = new Loading(action);
+        new WindowInteropHelper(loading) { Owner = new IntPtr(Globals.ThisAddIn.Application.Hwnd) };
+        loading.ShowDialog();
+
+        //动画窗体
+        private Task OperateTask = null;
+        private CancellationTokenSource tokenSource = null;
+        public Loading(Action<CancellationToken, Loading> action)
+        {
+            tokenSource = new CancellationTokenSource();
+            InitializeComponent();
+            OperateTask = Task.Run(() =>
+            {
+                action(tokenSource.Token, this);
+            }).ContinueWith(c =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    this.Close();
+                });
+            });
+        }
+
+        public void Close()
+        {
+            tokenSource.Cancel();
+        }
+    ````
+
+
+#### 其他加载动画
+-  其他还有一些效果，比如基于遮罩层的动画，也基本都是采用逻辑异步的思路，在这里不在赘述,完整代码访问[git](http://git.thankful.top:6023/jiangxj/ExcelAddIn.git)

@@ -1,0 +1,242 @@
+---
+layout: post
+title: vue压缩图片上传预览
+category: Vue;JavaScript
+date: 2021-01-19
+---
+
+[TOC]
+
+### 组件：vant
+
+  首先引入包
+
+  ```` js
+  import { Toast } from "vant";
+  import { Dialog, ImagePreview, Lazyload } from "vant";
+  ````
+
+### 上传图片并压缩
+
+  ```` js
+  <label>
+   <input
+    type="file"
+    name
+    id="form"
+    @change="uploadIMG"
+    style="opacity:0;width:0;"
+    capture="camera"
+    accept="image/*"
+    >
+   <van-icon name="photograph" size="100px"/>
+  </label>
+  //- 使用input并使用capture限制只能拍照上传，为了只显示下面的icon因此将input的设置透明，用<label>标签把他们包起来。
+  ````
+
+### 上传时压缩
+
+  ```` js
+  uploadIMG(e) {
+        let files = e.target.files || e.dataTransfer.files;
+        if (!files.length) return;
+        this.picavalue = files[0];
+        this.imgPreview(this.picavalue);
+      },
+      //获取图片
+      imgPreview(file, callback) {
+        let self = this;
+        //判断支不支持FileReader
+        if (!file || !window.FileReader) return;
+        if (/^image/.test(file.type)) {
+          //创建一个reader
+          let reader = new FileReader();
+  
+          //将图片转成base64格式
+          reader.readAsDataURL(file);
+          //读取成功后的回调
+          reader.onloadend = function() {
+            if (self.base1 == null) {
+              self.base1 = this.result;
+            } else if (self.base2 == null) {
+              self.base2 = this.result;
+            } else {
+              self.base3 = this.result;
+            }
+            let result = this.result;
+            let img = new Image();
+            img.src = result;
+            img.onload = function() {
+              //let data = self.compress(img);
+              if (self.imgUrl == null) {
+                let img = new Image();
+                self.imgUrl = result;
+                img.src = self.imgUrl;
+                self.images.push(self.compress(img));
+              } else if (self.imgUrl2 == null) {
+                let img = new Image();
+                self.imgUrl2 = result;
+                img.src = self.imgUrl2;
+                self.images.push(self.compress(img));
+              } else {
+                let img = new Image();
+                self.imgUrl3 = result;
+                img.src = self.imgUrl3;
+                self.images.push(self.compress(img));
+              }
+            };
+          };
+        }
+      },
+  
+  //self.base 保存了原图片的base64string ,self.imgUrl为界面显示图片的base64string
+  ````
+
+### 前端压缩图片
+
+  ```` js
+      // 压缩图片
+      compress(img) {
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        let initSize = img.src.length;
+        let width = img.width;
+        let height = img.height;
+        canvas.width = width;
+        canvas.height = height;
+        // 铺底色
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        //进行最小压缩
+        let ndata = canvas.toDataURL("image/jpeg", 0.1);
+        return ndata;
+      }
+  
+  ````
+
+### 点击图片预览
+
+  ```` js
+  <van-image-preview
+   v-model="isEnlargeImage"
+   :images="images"
+   @change="onChange"
+   :startPosition="startPosition"
+   >
+   <template v-slot:index>第{ index }页</template>
+  </van-image-preview>
+
+ 
+  <div
+   class="cha ui-square imgbox"
+   v-show="imgUrl != null"
+   @touchstart="gotouchstart"
+   @touchmove="gotouchmove"
+   @touchend="gotouchend"
+   >
+   <div>
+    <img :src="imgUrl" width="100%" height="auto" @click="showImgPreview">
+   </div>
+  </div>
+  //点击图片时将isEnlargeImage值改为true，预览对应的点击图片需要将startPosition设置为对应索引
+  ````
+
+### 长按删除
+
+  ```` js
+  @touchstart  @touchmove  @touchend 主要用于长按删除
+  var timeOutEvent = 0; //定时器
+  
+  gotouchstart() {
+   let self = this;
+   clearTimeout(timeOutEvent); //清除定时器
+   timeOutEvent = 0;
+   timeOutEvent = setTimeout(function() {
+   //执行长按要执行的内容，
+    self.delImg();
+   }, 600); //这里设置定时
+  },
+  //手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
+  gotouchend() {
+   clearTimeout(timeOutEvent);
+   if (timeOutEvent != 0) {
+   //这里写要执行的内容（尤如onclick事件）
+   }
+  },
+  //如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
+  gotouchmove() {
+   clearTimeout(timeOutEvent); //清除定时器
+   timeOutEvent = 0;
+  },
+  self.delImg();//将对应图片的base64string置为空。
+  ````
+
+ 
+
+### 后端压缩(C#)
+
+```` c#
+        /// <summary>
+        /// 生成缩略图
+        /// </summary>
+        /// <param name="sourceFile">原始图片文件</param>
+        /// <param name="quality">质量压缩比</param>
+        /// <param name="multiple">收缩倍数</param>
+        /// <param name="outputFile">输出文件名</param>
+        /// <returns>成功返回true,失败则返回false</returns>
+        public string getThumImage(string sourceFile, long quality, int multiple)
+        {
+            try
+            {
+                byte[] bt = Convert.FromBase64String(sourceFile);
+                Stream stream = new MemoryStream(bt);
+                System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                //Bitmap bitmap = new Bitmap(img);
+                long imageQuality = quality;
+                Bitmap sourceImage = new Bitmap(img);
+                ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
+                System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, imageQuality);
+                myEncoderParameters.Param[0] = myEncoderParameter;
+                float xWidth = sourceImage.Width;
+                float yWidth = sourceImage.Height;
+                Bitmap newImage = new Bitmap((int)(xWidth / multiple), (int)(yWidth / multiple));
+                Graphics g = Graphics.FromImage(newImage);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    g.DrawImage(sourceImage, 0, 0, xWidth / multiple, yWidth / multiple);
+                    g.Dispose();
+                    newImage.Save(ms, myImageCodecInfo, myEncoderParameters);
+                    return Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; ;
+            }
+        }
+
+        /**/
+        /// <summary>
+        /// 获取图片编码信息
+        /// </summary>
+        private ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            int j;
+            ImageCodecInfo[] encoders;
+            encoders = ImageCodecInfo.GetImageEncoders();
+            for (j = 0; j < encoders.Length; ++j)
+            {
+                if (encoders[j].MimeType == mimeType)
+                    return encoders[j];
+            }
+            return null;
+        }
+````
+
+### END
+
+

@@ -1,0 +1,23 @@
+---
+layout: post
+title: Dictionary HashTable HashSet 区别
+category: C#
+date: 2021-04-15
+---
+
+## HashTable和Dictionary的区别：
+
+- 1.HashTable不支持**泛型**，而Dictionary支持泛型。
+- 2.**Hashtable中key-value键值对均为object类型**，所以在存储或检索值类型时通常发生装箱和拆箱的操作，所以你可能需要进行一些类型转换的操作，而且对于int,float这些值类型还需要进行装箱等操作，非常耗时。
+- 3.**单线程**程序中推荐使用 **Dictionary**, 有泛型优势, 且读取速度较快, 容量利用更充分。
+- **多线程**程序中推荐使用 **Hashtable**, 默认的 Hashtable 允许单线程写入, 多线程读取, 对 Hashtable 进一步调用 Synchronized() 方法可以获得完全线程安全的类型.
+- 而 Dictionary 非线程安全, 必须人为使用 lock 语句进行保护, 效率大减。
+- 在通过代码测试的时候发现**key是整数型，Dictionary**的效率比Hashtable**快**，
+- 如果key是字符串型，Dictionary的效率没有Hashtable快。
+
+## HashSet
+
+- HashSet<T>类主要是设计用来做高性能集运算的，
+-  例如对两个集合**求交集、并集、差集等**。
+-  集合中包含一组不重复出现且无特性顺序的元素，HashSet**拒绝接受重复**的对象。
+-  HashSet<T>用来存放复合类型时要重载GetHashCode()，Equals(object obj)两个方法。

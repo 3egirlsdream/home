@@ -1,0 +1,26 @@
+---
+layout: post
+title: Typoa+PicGo+gitee图床
+category: 杂谈;Markdown
+date: 2021-01-11
+---
+
+## 创建一个**公共**仓库
+
+- 打开个人设置创建一个私钥
+![image-20210111175131877](https://gitee.com/eeegirlsdream/picture/raw/master/aticle/20210111175131.png)
+
+## 安装picgo
+
+- [下载picgo](https://github.com/Molunerfinn/PicGo/releases)
+
+- 安装插件                                            
+![image-20210111175500520](https://gitee.com/eeegirlsdream/picture/raw/master/aticle/20210111175500.png)
+
+- 设置gitee作为图床，将刚才的令牌填到token
+![image-20210111175639](https://gitee.com/eeegirlsdream/picture/raw/master/aticle/20210111175639.png)
+
+- Typoa设置，按照图片设置
+![image-20210111180107928](https://gitee.com/eeegirlsdream/picture/raw/master/aticle/20210111180107.png)
+
+## 完成
