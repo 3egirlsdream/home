@@ -1,0 +1,25 @@
+title: 青年晚报
+subtitle: Youth Evening Post
+description: 一个三十岁人的个人刊物
+baseurl: "/youth-evening-post"
+url: "https://3egirlsdream.github.io"
+github:
+  repo: "3egirlsdream/youth-evening-post"
+  branch: "main"
+
+permalink: /:year/:month/:day/:title/
+timezone: Asia/Shanghai
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+sass:
+  style: compressed
+
+collections:
+  posts:
+    title: Posts
+    output: true
+    permalink: /posts/:slug/

@@ -1,0 +1,20 @@
+---
+layout: default
+title: 所有文章
+---
+
+<div style="padding: 40px 50px;">
+  <div class="section-header" style="margin-bottom: 30px;">
+    <h2>所有文章</h2>
+  </div>
+
+  <ul class="post-list">
+    {% for post in site.posts %}
+    <li>
+      <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      <p class="excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+      <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}{% if post.category %} · {{ post.category }}{% endif %}</div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

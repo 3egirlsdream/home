@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} - 青年晚报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif+SC:wght@400;500;600;700&family=Jost:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&family=Long+Cang&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kraft: #d4b896;
+      --kraft-light: #dfcdb0;
+      --kraft-dark: #c4a67a;
+      --kraft-shadow: #b8956a;
+      --ink: #1c1409;
+      --ink-soft: #3d3020;
+      --ink-light: #6b5d4a;
+      --terracotta: #a85c3d;
+      --sage: #6b7c5e;
+      --cream: #f0e4d0;
+      --rule: #c4a87a;
+      --rule-light: #d4bc94;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif SC', '宋体', serif;
+      background: #2a2419;
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.7;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover { color: var(--terracotta); }
+
+    .newspaper {
+      background: var(--kraft);
+      max-width: 1200px;
+      margin: 0 auto;
+      box-shadow:
+        0 0 0 1px var(--kraft-dark),
+        0 0 0 4px var(--ink),
+        0 0 0 5px var(--kraft-dark),
+        0 8px 40px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .newspaper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .masthead {
+      border-bottom: 4px double var(--ink);
+      padding: 30px 40px 25px;
+      text-align: center;
+    }
+
+    .masthead-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .masthead-left, .masthead-right {
+      font-family: 'Jost', sans-serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      line-height: 1.8;
+    }
+
+    .masthead-edition {
+      font-family: 'EB Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--ink-light);
+      text-transform: uppercase;
+    }
+
+    .masthead-title-cn {
+      font-family: 'Ma Shan Zheng', 'ZCOOL QingKe HuangYou', 'Noto Serif SC', serif;
+      font-size: clamp(56px, 12vw, 100px);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      line-height: 1;
+      margin: 8px 0;
+      text-shadow: 2px 2px 0 var(--kraft-dark);
+    }
+
+    .masthead-title-en {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(14px, 2.5vw, 22px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.4em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+    }
+
+    .masthead-bottom {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .masthead-bottom span {
+      font-family: 'EB Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--ink-light);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 14px 80px;
+      border-bottom: 1px solid var(--rule);
+      background: var(--kraft-light);
+    }
+
+    .nav a {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .nav a:hover { color: var(--terracotta); }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .col-4 { grid-column: span 4; }
+    .col-2 { grid-column: span 2; }
+
+    .border-right { border-right: 1px solid var(--rule); }
+    .padding { padding: 30px 35px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .section-header h2 {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .post-list { list-style: none; }
+
+    .post-list li {
+      padding: 18px 0;
+      border-bottom: 1px dotted var(--rule-light);
+    }
+
+    .post-list li:last-child { border-bottom: none; }
+
+    .post-list h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .post-list h3 a { color: var(--ink); }
+    .post-list h3 a:hover { color: var(--terracotta); }
+
+    .post-list .excerpt {
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .post-list .meta {
+      font-family: 'Jost', sans-serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .sidebar-block { margin-bottom: 30px; }
+
+    .sidebar-block h3 {
+      font-family: 'Jost', sans-serif;
+      font-size: 8px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .about-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.8;
+      color: var(--ink-soft);
+    }
+
+    .about-text p { margin-bottom: 10px; }
+
+    .signature {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px;
+      margin-top: 12px;
+    }
+
+    .cat-list { list-style: none; }
+
+    .cat-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dotted var(--rule-light);
+      font-size: 11px;
+    }
+
+    .cat-list a { color: var(--ink); }
+    .cat-list a:hover { color: var(--terracotta); }
+    .cat-list span { color: var(--ink-light); font-size: 9px; }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-family: 'Jost', sans-serif;
+      font-size: 7px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--rule);
+      color: var(--ink-soft);
+    }
+
+    .tag:hover {
+      background: var(--ink);
+      color: var(--kraft);
+      border-color: var(--ink);
+    }
+
+    .footer {
+      padding: 25px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--ink);
+    }
+
+    .footer-logo {
+      font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      color: var(--kraft);
+    }
+
+    .footer-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* Post page styles */
+    .post-content {
+      padding: 40px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .post-content h1 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .post-content .post-meta {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .post-content p {
+      font-size: 14px;
+      line-height: 2;
+      margin-bottom: 18px;
+      text-align: justify;
+    }
+
+    .post-content h2 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 30px 0 15px;
+      letter-spacing: 1px;
+    }
+
+    .post-content h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      font-weight: 500;
+      margin: 25px 0 10px;
+    }
+
+    .post-content blockquote {
+      font-family: 'EB Garamond', serif;
+      font-size: 15px;
+      font-style: italic;
+      line-height: 1.8;
+      color: var(--ink-soft);
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-left: 3px solid var(--terracotta);
+      background: var(--kraft-light);
+    }
+
+    .post-content code {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: var(--kraft-dark);
+      padding: 2px 6px;
+    }
+
+    .post-content pre {
+      background: var(--kraft-dark);
+      padding: 15px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .post-content pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .post-content ul, .post-content ol {
+      margin: 15px 0;
+      padding-left: 25px;
+    }
+
+    .post-content li {
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .post-content a {
+      color: var(--terracotta);
+      text-decoration: underline;
+    }
+
+    .post-content a:hover { color: var(--ink); }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink);
+      padding: 8px 20px;
+      border: 1px solid var(--ink);
+    }
+
+    .back-link:hover {
+      background: var(--ink);
+      color: var(--kraft);
+    }
+
+    @media (max-width: 800px) {
+      .content { grid-template-columns: 1fr; }
+      .col-4, .col-2 { grid-column: span 1; }
+      .border-right { border-right: none; border-bottom: 1px solid var(--rule); }
+      .post-content { padding: 30px 25px; }
+      .masthead-top { flex-direction: column; gap: 10px; text-align: center; }
+      .masthead-bottom { flex-wrap: wrap; gap: 15px; }
+    }
+
+    ::selection { background: var(--terracotta); color: var(--cream); }
+  </style>
+</head>
+<body>
+  <main class="newspaper">
+    <header class="masthead">
+      <div class="masthead-top">
+        <div class="masthead-left">
+          <div>新闻登记证：内准字2026年第009号</div>
+          <div>本版编辑：王</div>
+        </div>
+        <div class="masthead-center">
+          <div class="masthead-edition">第四十二卷</div>
+          <h1 class="masthead-title-cn"><a href="{{ site.baseurl }}/">青年晚报</a></h1>
+          <p class="masthead-title-en">Youth Evening Post</p>
+        </div>
+        <div class="masthead-right">
+          <div>二〇二六年</div>
+          <div>发行</div>
+        </div>
+      </div>
+      <div class="masthead-bottom">
+        <span>零售：免费</span>
+        <span>网址：youth-evening.post</span>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <a href="{{ site.baseurl }}/">首页</a>
+      <a href="{{ site.baseurl }}/posts/">文章</a>
+      <a href="{{ site.baseurl }}/about/">关于</a>
+    </nav>
+
+    {{ content }}
+
+    <footer class="footer">
+      <div class="footer-logo"><a href="{{ site.baseurl }}/" style="color: var(--kraft);">青年晚报</a></div>
+      <div class="footer-text">© 2026 版权所有</div>
+    </footer>
+  </main>
+</body>
+</html>
