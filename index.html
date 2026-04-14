@@ -3,35 +3,59 @@ layout: default
 title: 首页
 ---
 
-<div class="content">
-  <div class="col-4 border-right padding">
-    <div class="section-header">
-      <h2>最新文章</h2>
-    </div>
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-item"><strong>天气</strong> 多云 18°C</div>
+  <div class="ticker-item"><strong>本版文章</strong> 共{{ site.posts | size }}篇</div>
+  <div class="ticker-item"><strong>阅读时间</strong> 约{{ site.posts | size | times: 5 }}分钟</div>
+  <div class="ticker-item"><strong>编辑手记</strong> 三十岁的门槛</div>
+</div>
 
-    <ul class="post-list">
-      {% for post in site.posts limit:5 %}
-      <li>
-        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-        <p class="excerpt">{{ post.excerpt | strip_html | truncate: 100 }}</p>
-        <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}{% if post.category %} · {{ post.category }}{% endif %}</div>
-      </li>
-      {% endfor %}
-    </ul>
+<!-- MAIN CONTENT -->
+<div class="content">
+  <!-- BANNER HEADLINE -->
+  <div class="banner-headline">
+    {% assign latest = site.posts | first %}
+    <h1><a href="{{ latest.url }}">{{ latest.title }}</a></h1>
+    <p class="summary">{{ latest.excerpt | strip_html | truncate: 150 }}</p>
+    <div class="meta">{{ latest.date | date: "%Y年%m月%d日" }} · {{ latest.category }}</div>
+    <a href="{{ latest.url }}" class="read-more">阅读全文</a>
   </div>
 
+  <!-- MAIN STORY - 4 cols -->
+  <div class="col-4 col-border-right padding">
+    <div class="section-header">
+      <h2>最新文章</h2>
+      <span class="page-num">第一版</span>
+    </div>
+
+    {% for post in site.posts offset:1 limit:4 %}
+    <article class="story">
+      <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      <p>{{ post.excerpt | strip_html | truncate: 80 }}</p>
+      <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}</div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <!-- MIDDLE - 2 cols -->
   <div class="col-2 padding">
+    <div class="section-header">
+      <h2>编者寄语</h2>
+    </div>
+
     <div class="sidebar-block">
-      <h3>本报宗旨</h3>
       <div class="about-text">
-        <p>记录三十岁前后的思考与生活，不逃避，不矫饰。</p>
-        <p>愿这些文字，在时代洪流中留下一点个人印记。</p>
+        <p>三十岁那年，我开始写这个报纸。不为别人，只为自己。</p>
+        <p>等我老了，回头看看，也许会笑，也许会哭。但都是真实的。</p>
       </div>
       <div class="signature">—— 王</div>
     </div>
 
+    <div class="rule-dotted"></div>
+
     <div class="sidebar-block">
-      <h3>栏目分类</h3>
+      <h4>栏目分类</h4>
       <ul class="cat-list">
         <li><a href="#">生活感悟</a><span>24篇</span></li>
         <li><a href="#">读书笔记</a><span>18篇</span></li>
@@ -41,18 +65,116 @@ title: 首页
       </ul>
     </div>
 
-    <div class="sidebar-block">
-      <h3>标签</h3>
-      <div class="tag-list">
-        <a href="#" class="tag">三十岁</a>
-        <a href="#" class="tag">告别</a>
-        <a href="#" class="tag">和解</a>
-        <a href="#" class="tag">生活</a>
-        <a href="#" class="tag">成长</a>
-        <a href="#" class="tag">独处</a>
-        <a href="#" class="tag">城市</a>
-        <a href="#" class="tag">阅读</a>
+    <div class="weather-box">
+      <div class="weather-temp">18°</div>
+      <div class="weather-desc">多云</div>
+    </div>
+  </div>
+
+  <!-- MORE ARTICLES - 6 cols -->
+  <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule);">
+    <div class="section-header">
+      <h2>更多文章</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      {% for post in site.posts offset:5 limit:6 %}
+      <article class="story story-sm">
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <p>{{ post.excerpt | strip_html | truncate: 60 }}</p>
+        <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}</div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- RECENT SIDEBAR -->
+  <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule);">
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+      <div>
+        <div class="section-header">
+          <h2>近期更新</h2>
+        </div>
+        {% for post in site.posts limit:4 %}
+        <div class="recent-item">
+          <h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
+          <div class="date">{{ post.date | date: "%Y年%m月%d日" }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div>
+        <div class="section-header">
+          <h2>编者按</h2>
+        </div>
+        <div class="quote-box">
+          <blockquote>"青春不是人生的一个阶段，而是心境的选择。三十岁不是青春的终点，而是另一种开始。"</blockquote>
+          <cite>—— 编者 · 2026年春</cite>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- TAGS ROW -->
+  <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule); background: var(--kraft-light);">
+    <div class="section-header">
+      <h2>标签</h2>
+    </div>
+    <div class="tag-list">
+      <a href="#" class="tag">三十岁</a>
+      <a href="#" class="tag">告别</a>
+      <a href="#" class="tag">和解</a>
+      <a href="#" class="tag">生活</a>
+      <a href="#" class="tag">成长</a>
+      <a href="#" class="tag">独处</a>
+      <a href="#" class="tag">城市</a>
+      <a href="#" class="tag">阅读</a>
+      <a href="#" class="tag">写作</a>
+      <a href="#" class="tag">家庭</a>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM SECTION -->
+<div class="bottom-section">
+  <div class="bottom-col">
+    <h4>关于本报</h4>
+    <p>记录三十岁前后的思考与生活，不逃避，不矫饰。愿这些文字，在时代洪流中留下一点个人印记。</p>
+  </div>
+  <div class="bottom-col">
+    <h4>阅读排行</h4>
+    <ul>
+      {% for post in site.posts limit:5 %}
+      <li>{{ post.title }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="bottom-col">
+    <h4>历年归档</h4>
+    <ul>
+      <li>2026年</li>
+      <li>2025年</li>
+      <li>2024年</li>
+      <li>更早</li>
+    </ul>
+  </div>
+  <div class="bottom-col">
+    <h4>联络</h4>
+    <ul>
+      <li>关于我</li>
+      <li>所有文章</li>
+      <li>RSS订阅</li>
+      <li>邮箱联络</li>
+    </ul>
+  </div>
+  <div class="bottom-col">
+    <h4>声明</h4>
+    <p>本站文章均为个人创作，转载需注明出处。</p>
+  </div>
+  <div class="bottom-col">
+    <h4>版权</h4>
+    <p>用文字记录，与青春和解的过程。</p>
+    <div class="ornament" style="margin: 10px 0; letter-spacing: 5px;">◆ ◆</div>
+    <p style="font-size: 9px; color: var(--ink-light);">editor@youth-evening.post</p>
   </div>
 </div>
