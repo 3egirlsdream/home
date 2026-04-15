@@ -88,16 +88,49 @@ git push origin main
 - 首页：https://3egirlsdream.github.io/home/
 - 文章页：`https://3egirlsdream.github.io/home/{文件名中日期后的部分}.html`
 
-## 从数据库批量导出
+## 数据库导出配置
 
-如果需要从 MySQL 重新导出文章：
+`export_articles.py` 的数据库密码通过环境变量读取，不会提交到 GitHub。
+
+### 首次配置（如果还没配过）
+
+1. 在 `~/.zshrc` 末尾添加以下内容：
+
+```bash
+# 青年晚报 MySQL
+export DB_HOST="数据库地址"
+export DB_USER="用户名"
+export DB_PASSWORD="密码"
+export DB_NAME="数据库名"
+export DB_PORT="3306"
+```
+
+2. 生效配置：
+
+```bash
+source ~/.zshrc
+```
+
+3. 安装依赖：
+
+```bash
+pip3 install mysql-connector-python
+```
+
+4. 验证环境变量是否生效：
+
+```bash
+echo $DB_HOST
+```
+
+### 使用导出脚本
 
 ```bash
 cd /Users/jiangxinji/Documents/青年晚报/
 python3 export_articles.py
 ```
 
-> 需要安装 `mysql-connector-python`：`pip3 install mysql-connector-python`
+> `export_articles.py` 在 `.gitignore` 中，不会被提交到 GitHub。
 
 ## 常用命令速查
 
