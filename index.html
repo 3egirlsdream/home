@@ -1,192 +1,198 @@
 ---
 layout: default
-title: 首页
 ---
 
-    <!-- TICKER -->
-    <div class="ticker">
-      <div class="ticker-item"><strong>天气</strong> 多云 18°C</div>
-      <div class="ticker-item"><strong>天气</strong> 适宜出行</div>
-      <div class="ticker-item"><strong>本版文章</strong> 共{{ site.posts | size }}篇</div>
-      <div class="ticker-item"><strong>阅读时间</strong> 约{{ site.posts | size | times: 5 }}分钟</div>
-      <div class="ticker-item"><strong>编辑手记</strong> 三十岁的门槛</div>
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-item"><strong>天气</strong> 多云 18°C</div>
+  <div class="ticker-item"><strong>本版文章</strong> 共{{ site.posts.size }}篇</div>
+  <div class="ticker-item"><strong>最新文章</strong> {{ site.posts.first.title | truncate: 12 }}</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+  {% assign latest = site.posts.first %}
+  {% if latest %}
+  <!-- BANNER HEADLINE -->
+  <div class="banner-headline">
+    <h1><a href="{{ latest.url }}">{{ latest.title }}</a></h1>
+    {% if latest.excerpt %}
+    <p class="summary">{{ latest.excerpt | strip_html | truncate: 200 }}</p>
+    {% endif %}
+    <div class="meta">{{ latest.date | date: "%Y年%m月%d日" }}{% if latest.category %} · {{ latest.category }}{% endif %}</div>
+    <a href="{{ latest.url }}" class="read-more">阅读全文</a>
+  </div>
+  {% endif %}
+
+  <!-- MAIN STORIES - 4 cols -->
+  <div class="col-4 col-border-right padding">
+    <div class="section-header">
+      <h2>头条</h2>
+      <span class="page-num">第一版</span>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="content">
-      <!-- BANNER HEADLINE -->
-      {% assign latest = site.posts | first %}
-      <div class="banner-headline">
-        <h1><a href="{{ latest.url }}">{{ latest.title }}</a></h1>
-        <p class="summary">{{ latest.excerpt | strip_html | truncate: 150 }}</p>
-        <div class="meta">{{ latest.date | date: "%Y年%m月%d日" }} · {{ latest.category }}</div>
-        <a href="{{ latest.url }}" class="read-more">阅读全文</a>
+    {% for post in site.posts offset:1 limit:1 %}
+    <article class="story story-drop">
+      <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      {% if post.excerpt %}
+      <p class="summary">{{ post.excerpt | strip_html | truncate: 150 }}</p>
+      {% endif %}
+      <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}{% if post.category %} · {{ post.category }}{% endif %}</div>
+      <a href="{{ post.url }}" class="read-link">继续阅读 →</a>
+    </article>
+    {% endfor %}
+
+    <div class="rule-dotted"></div>
+
+    {% for post in site.posts offset:2 limit:2 %}
+    <article class="story story-sm">
+      <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      {% if post.excerpt %}
+      <p>{{ post.excerpt | strip_html | truncate: 80 }}</p>
+      {% endif %}
+      <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}{% if post.category %} · {{ post.category }}{% endif %}</div>
+    </article>
+    {% unless forloop.last %}
+    <div class="rule-dotted"></div>
+    {% endunless %}
+    {% endfor %}
+  </div>
+
+  <!-- MIDDLE - 2 cols -->
+  <div class="col-2 padding">
+    <div class="section-header">
+      <h2>编者寄语</h2>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="about-text">
+        <p>三十岁那年，我开始写这个报纸。不为别人，只为自己。</p>
+        <p>等我老了，回头看看，也许会笑，也许会哭。但都是真实的。</p>
       </div>
+      <div class="signature">—— 王</div>
+    </div>
 
-      <!-- MAIN STORY - 4 cols -->
-      <div class="col-4 col-border-right padding">
+    <div class="rule-dotted"></div>
+
+    <div class="sidebar-block">
+      <h4>栏目分类</h4>
+      <ul class="cat-list">
+        {% assign categories = site.posts | map: "category" | uniq %}
+        {% for cat in categories %}
+        {% unless cat == empty %}
+        <li><a href="#">{{ cat }}</a><span>{{ site.posts | where: "category", cat | size }}篇</span></li>
+        {% endunless %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="weather-box">
+      <div class="weather-temp">18°</div>
+      <div class="weather-desc">多云</div>
+    </div>
+  </div>
+
+  <!-- MORE ARTICLES - 6 cols -->
+  <div class="col-6 col-border-right padding-sm">
+    <div class="section-header">
+      <h2>更多文章</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      {% for post in site.posts offset:4 limit:6 %}
+      <article class="story story-sm">
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}
+        <p>{{ post.excerpt | strip_html | truncate: 60 }}</p>
+        {% endif %}
+        <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}{% if post.category %} · {{ post.category }}{% endif %}</div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- RECENT POSTS SIDEBAR -->
+  <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule);">
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+      <div>
         <div class="section-header">
-          <h2>头条</h2>
-          <span class="page-num">第一版</span>
+          <h2>近期更新</h2>
         </div>
-
-        {% for post in site.posts offset:1 limit:3 %}
-        <article class="story{% if forloop.first %} story-drop{% endif %}">
-          <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-          {% if forloop.first %}
-          <p class="summary">{{ post.excerpt | strip_html | truncate: 100 }}</p>
-          <div class="meta">{{ post.date | date: "%Y年%m月%d日" }} · {{ post.category }}</div>
-          <a href="{{ post.url }}" class="read-link">继续阅读 →</a>
-          {% else %}
-          <p>{{ post.excerpt | strip_html | truncate: 80 }}</p>
-          <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}</div>
-          {% endif %}
-        </article>
-        {% unless forloop.last %}<div class="rule-dotted"></div>{% endunless %}
+        {% for post in site.posts limit:6 %}
+        <div class="recent-item">
+          <h5><a href="{{ post.url }}">{{ post.title }}</a></h5>
+          <div class="date">{{ post.date | date: "%Y年%m月%d日" }}</div>
+        </div>
         {% endfor %}
       </div>
 
-      <!-- MIDDLE - 2 cols -->
-      <div class="col-2 padding">
+      <div>
         <div class="section-header">
-          <h2>编者寄语</h2>
+          <h2>编者按</h2>
         </div>
-
-        <div class="sidebar-block">
-          <div class="about-text">
-            <p>三十岁那年，我开始写这个报纸。不为别人，只为自己。</p>
-            <p>等我老了，回头看看，也许会笑，也许会哭。但都是真实的。</p>
-          </div>
-          <div class="signature">—— 王</div>
-        </div>
-
-        <div class="rule-dotted"></div>
-
-        <div class="sidebar-block">
-          <h4>栏目分类</h4>
-          <ul class="cat-list">
-            <li><a href="#">生活感悟</a><span>24篇</span></li>
-            <li><a href="#">读书笔记</a><span>18篇</span></li>
-            <li><a href="#">工作随想</a><span>12篇</span></li>
-            <li><a href="#">城市漫游</a><span>15篇</span></li>
-            <li><a href="#">私人书信</a><span>8篇</span></li>
-          </ul>
-        </div>
-
-        <div class="weather-box">
-          <div class="weather-temp">18°</div>
-          <div class="weather-desc">多云</div>
-        </div>
-      </div>
-
-      <!-- CONTINUED STORIES - 6 cols -->
-      <div class="col-6 col-border-right padding-sm">
-        <div class="section-header">
-          <h2>更多文章</h2>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-          {% for post in site.posts offset:4 limit:6 %}
-          <article class="story story-sm">
-            <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-            <p>{{ post.excerpt | strip_html | truncate: 50 }}</p>
-            <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}</div>
-          </article>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- RECENT POSTS SIDEBAR -->
-      <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule);">
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
-          <div>
-            <div class="section-header">
-              <h2>近期更新</h2>
-            </div>
-            {% for post in site.posts limit:4 %}
-            <div class="recent-item">
-              <h5><a href="{{ post.url }}">{{ post.title }}</a></h5>
-              <div class="date">{{ post.date | date: "%Y年%m月%d日" }}</div>
-            </div>
-            {% endfor %}
-          </div>
-
-          <div>
-            <div class="section-header">
-              <h2>编者按</h2>
-            </div>
-            <div class="quote-box">
-              <blockquote>"青春不是人生的一个阶段，而是心境的选择。三十岁不是青春的终点，而是另一种开始。"</blockquote>
-              <cite>—— 编者 · 2026年春</cite>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAGS ROW -->
-      <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule); background: var(--kraft-light);">
-        <div class="section-header">
-          <h2>标签</h2>
-        </div>
-        <div class="tag-list">
-          <a href="#" class="tag">三十岁</a>
-          <a href="#" class="tag">告别</a>
-          <a href="#" class="tag">和解</a>
-          <a href="#" class="tag">生活</a>
-          <a href="#" class="tag">成长</a>
-          <a href="#" class="tag">独处</a>
-          <a href="#" class="tag">城市</a>
-          <a href="#" class="tag">阅读</a>
-          <a href="#" class="tag">写作</a>
-          <a href="#" class="tag">家庭</a>
-          <a href="#" class="tag">友情</a>
-          <a href="#" class="tag">健康</a>
-          <a href="#" class="tag">工作</a>
-          <a href="#" class="tag">思考</a>
+        <div class="quote-box">
+          <blockquote>"青春不是人生的一个阶段，而是心境的选择。三十岁不是青春的终点，而是另一种开始。"</blockquote>
+          <cite>—— 编者 · 2026年春</cite>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- BOTTOM SECTION -->
-    <div class="bottom-section">
-      <div class="bottom-col">
-        <h4>关于本报</h4>
-        <p>记录三十岁前后的思考与生活，不逃避，不矫饰。愿这些文字，在时代洪流中留下一点个人印记。</p>
-      </div>
-      <div class="bottom-col">
-        <h4>阅读排行</h4>
-        <ul>
-          {% for post in site.posts limit:5 %}
-          <li>{{ post.title }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="bottom-col">
-        <h4>历年归档</h4>
-        <ul>
-          <li>2026年</li>
-          <li>2025年</li>
-          <li>2024年</li>
-          <li>更早</li>
-        </ul>
-      </div>
-      <div class="bottom-col">
-        <h4>联络</h4>
-        <ul>
-          <li>关于我</li>
-          <li>所有文章</li>
-          <li>RSS订阅</li>
-          <li>邮箱联络</li>
-        </ul>
-      </div>
-      <div class="bottom-col">
-        <h4>声明</h4>
-        <p>本站文章均为个人创作，转载需注明出处。</p>
-      </div>
-      <div class="bottom-col">
-        <h4>版权</h4>
-        <p>用文字记录，与青春和解的过程。</p>
-        <div class="ornament" style="margin: 10px 0; letter-spacing: 5px;">◆ ◆</div>
-        <p style="font-size: 9px; color: var(--ink-light);">editor@youth-evening.post</p>
-      </div>
+  <!-- TAGS ROW -->
+  <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule); background: var(--kraft-light);">
+    <div class="section-header">
+      <h2>标签</h2>
     </div>
+    <div class="tag-list">
+      {% assign all_tags = site.posts | map: "tags" | join: "," | split: "," | uniq %}
+      {% for tag in all_tags %}
+      {% unless tag == empty %}
+      <a href="#" class="tag">{{ tag }}</a>
+      {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM SECTION -->
+<div class="bottom-section">
+  <div class="bottom-col">
+    <h4>关于本报</h4>
+    <p>记录三十岁前后的思考与生活，不逃避，不矫饰。愿这些文字，在时代洪流中留下一点个人印记。</p>
+  </div>
+  <div class="bottom-col">
+    <h4>阅读排行</h4>
+    <ul>
+      {% for post in site.posts limit:5 %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="bottom-col">
+    <h4>历年归档</h4>
+    <ul>
+      {% assign years = site.posts | map: "date" | map: "%Y" | uniq %}
+      {% for year in years %}
+      <li>{{ year }}年</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="bottom-col">
+    <h4>联络</h4>
+    <ul>
+      <li><a href="{{ site.baseurl }}/about.html">关于我</a></li>
+      <li><a href="{{ site.baseurl }}/posts.html">所有文章</a></li>
+      <li><a href="{{ site.baseurl }}/feed.xml">RSS订阅</a></li>
+    </ul>
+  </div>
+  <div class="bottom-col">
+    <h4>声明</h4>
+    <p>本站文章均为个人创作，转载需注明出处。</p>
+  </div>
+  <div class="bottom-col">
+    <h4>版权</h4>
+    <p>用文字记录，与青春和解的过程。</p>
+    <div class="ornament" style="margin: 10px 0; letter-spacing: 5px;">◆ ◆</div>
+    <p style="font-size: 9px; color: var(--ink-light);">editor@youth-evening.post</p>
+  </div>
+</div>

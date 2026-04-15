@@ -3,6 +3,17 @@ layout: default
 title: 所有文章
 ---
 
+<style>
+  .post-list { list-style: none; }
+  .post-list li { padding: 15px 0; border-bottom: 1px dotted var(--rule-light); }
+  .post-list li:last-child { border-bottom: none; }
+  .post-list h3 { font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+  .post-list h3 a { color: var(--ink); }
+  .post-list h3 a:hover { color: var(--terracotta); }
+  .post-list .excerpt { font-size: 12px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 6px; }
+  .post-list .meta { font-family: 'Jost', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-light); }
+</style>
+
 <div style="padding: 40px 50px;">
   <div class="section-header" style="margin-bottom: 30px;">
     <h2>所有文章</h2>
@@ -12,7 +23,9 @@ title: 所有文章
     {% for post in site.posts %}
     <li>
       <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      {% if post.excerpt %}
       <p class="excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+      {% endif %}
       <div class="meta">{{ post.date | date: "%Y年%m月%d日" }}{% if post.category %} · {{ post.category }}{% endif %}</div>
     </li>
     {% endfor %}
