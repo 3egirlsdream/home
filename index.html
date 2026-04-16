@@ -116,9 +116,11 @@ layout: default
       </article>
       {% endfor %}
     </div>
-  </div>
 
-  <!-- RECENT POSTS SIDEBAR -->
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="{{ site.baseurl }}/posts/" class="read-more">查看更多文章 →</a>
+    </div>
+  </div>
   <div class="col-6 padding-sm" style="border-top: 1px solid var(--rule);">
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
       <div>
@@ -188,7 +190,7 @@ layout: default
     <h4>联络</h4>
     <ul>
       <li><a href="{{ site.baseurl }}/about.html">关于我</a></li>
-      <li><a href="{{ site.baseurl }}/posts.html">所有文章</a></li>
+      <li><a href="{{ site.baseurl }}/posts/">所有文章</a></li>
       <li><a href="{{ site.baseurl }}/feed.xml">RSS订阅</a></li>
     </ul>
   </div>

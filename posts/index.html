@@ -1,7 +1,6 @@
 ---
 layout: default
 title: 所有文章
-permalink: /posts.html
 ---
 
 <style>
@@ -50,7 +49,7 @@ permalink: /posts.html
     {% if page == paginator.page %}
     <span class="current">{{ page }}</span>
     {% elsif page == 1 %}
-    <a href="{{ site.baseurl }}/posts.html">{{ page }}</a>
+    <a href="{{ site.baseurl }}/posts/">{{ page }}</a>
     {% else %}
     <a href="{{ site.baseurl }}/posts/page{{ page }}">{{ page }}</a>
     {% endif %}
