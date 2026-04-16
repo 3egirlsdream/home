@@ -77,10 +77,12 @@ layout: default
     <div class="sidebar-block">
       <h4>栏目分类</h4>
       <ul class="cat-list">
-        {% assign categories = site.posts | map: "category" | uniq %}
+        {% assign raw_cats = site.posts | map: "category" | join: ";" | split: ";" %}
+        {% assign categories = raw_cats | uniq | sort %}
         {% for cat in categories %}
-        {% unless cat == empty %}
-        <li><a href="#">{{ cat }}</a><span>{{ site.posts | where: "category", cat | size }}篇</span></li>
+        {% assign cat_strip = cat | strip %}
+        {% unless cat_strip == empty %}
+        <li><a href="#">{{ cat_strip }}</a></li>
         {% endunless %}
         {% endfor %}
       </ul>
