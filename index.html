@@ -79,13 +79,18 @@ layout: default
       <ul class="cat-list">
         {% assign raw_cats = site.posts | map: "category" | join: ";" | split: ";" %}
         {% assign categories = raw_cats | uniq | sort %}
+        {% assign cat_count = 0 %}
         {% for cat in categories %}
         {% assign cat_strip = cat | strip %}
         {% unless cat_strip == empty %}
-        <li><a href="#">{{ cat_strip }}</a></li>
+        {% assign cat_count = cat_count | plus: 1 %}
+        <li{% if cat_count > 5 %} class="cat-hidden" style="display:none;"{% endif %}><a href="#">{{ cat_strip }}</a></li>
         {% endunless %}
         {% endfor %}
       </ul>
+      {% if cat_count > 5 %}
+      <a href="#" class="cat-toggle" onclick="var items=this.parentElement.querySelectorAll('.cat-hidden');var hidden=items[0].style.display==='none';items.forEach(function(e){e.style.display=hidden?'flex':'none'});this.textContent=hidden?'收起':'展开更多';return false;">展开更多</a>
+      {% endif %}
     </div>
 
     <div class="weather-box">
