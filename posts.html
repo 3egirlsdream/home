@@ -1,6 +1,7 @@
 ---
 layout: default
 title: 所有文章
+permalink: /posts.html
 ---
 
 <style>
@@ -12,15 +13,21 @@ title: 所有文章
   .post-list h3 a:hover { color: var(--terracotta); }
   .post-list .excerpt { font-size: 12px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 6px; }
   .post-list .meta { font-family: 'Jost', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-light); }
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 30px 0 10px; }
+  .pagination a, .pagination span { font-family: 'Jost', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border: 1px solid var(--rule); color: var(--ink-soft); text-decoration: none; transition: all 0.3s; }
+  .pagination a:hover { background: var(--ink); color: var(--kraft); border-color: var(--ink); }
+  .pagination .current { background: var(--ink); color: var(--kraft); border-color: var(--ink); }
+  .pagination .disabled { opacity: 0.3; pointer-events: none; }
 </style>
 
 <div style="padding: 40px 50px;">
   <div class="section-header" style="margin-bottom: 30px;">
     <h2>所有文章</h2>
+    <span class="page-num">共 {{ site.posts.size }} 篇 · 第 {{ paginator.page }}/{{ paginator.total_pages }} 页</span>
   </div>
 
   <ul class="post-list">
-    {% for post in site.posts %}
+    {% for post in paginator.posts %}
     <li>
       <h3><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h3>
       {% if post.excerpt %}
@@ -30,4 +37,30 @@ title: 所有文章
     </li>
     {% endfor %}
   </ul>
+
+  {% if paginator.total_pages > 1 %}
+  <div class="pagination">
+    {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}">← 上一页</a>
+    {% else %}
+    <span class="disabled">← 上一页</span>
+    {% endif %}
+
+    {% for page in (1..paginator.total_pages) %}
+    {% if page == paginator.page %}
+    <span class="current">{{ page }}</span>
+    {% elsif page == 1 %}
+    <a href="{{ site.baseurl }}/posts.html">{{ page }}</a>
+    {% else %}
+    <a href="{{ site.baseurl }}/posts/page{{ page }}">{{ page }}</a>
+    {% endif %}
+    {% endfor %}
+
+    {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl }}">下一页 →</a>
+    {% else %}
+    <span class="disabled">下一页 →</span>
+    {% endif %}
+  </div>
+  {% endif %}
 </div>
